@@ -6,7 +6,7 @@ set(Core_Sources
     primitives.h
     # ram.h
     # ram.cpp
-    # bus_chain_node.h
+    bus_chain_node.h
 )
 
 # add_library(Core_Lib STATIC ${Core_Sources})
