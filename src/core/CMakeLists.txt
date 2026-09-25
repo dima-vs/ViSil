@@ -10,3 +10,7 @@ set(Core_Sources
 )
 
 add_library(Core_Lib STATIC ${Core_Sources})
+
+target_include_directories(Core_Lib PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)

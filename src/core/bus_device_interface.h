@@ -19,7 +19,7 @@ protected:
     Primitives::Endianness m_endianness;
 public:
     virtual ~IBusDevice() = default;
-    IBusDevice(Primitives::Endianness endianness = Primitives::Endianness::Little) :
+    IBusDevice(Primitives::Endianness endianness) :
         m_endianness(endianness) {}
 
     // size in bytes

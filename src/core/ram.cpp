@@ -7,10 +7,12 @@ namespace Core
 
 Ram::Ram(
     size_t blockCount, size_t blockSize,
-    RamUninitBehavior ramBehavior
-    ) : m_blockCount(blockCount),
+    RamUninitBehavior ramBehavior,
+    Primitives::Endianness endianness) : IBusDevice(endianness),
+    m_blockCount(blockCount),
     m_blockSize(blockSize),
     m_blocks(blockCount),
+    m_initializedMask(blockCount),
     m_ramBehavior(ramBehavior)
 {
     m_capacity = m_blockCount * m_blockSize;

@@ -18,11 +18,10 @@ enum class RamUninitBehavior
 class Ram : public IBusDevice
 {
 private:
-    size_t m_capacity;
-
     // size of a single physically allocated block
     uint32_t m_blockSize;
     uint32_t m_blockCount;
+    size_t m_capacity;
 
     std::vector<std::unique_ptr<uint8_t[]>> m_blocks;
     // holds true if the corresponding memory cell has been written at least once
@@ -40,7 +39,8 @@ private:
 public:
     Ram(
         size_t blockCount, size_t blockSize=4*1024,
-        RamUninitBehavior ramBehavior=RamUninitBehavior::ZeroFill
+        RamUninitBehavior ramBehavior=RamUninitBehavior::ZeroFill,
+        Primitives::Endianness endianness = Primitives::Endianness::Little
         );
 
     BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) override;
