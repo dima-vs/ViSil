@@ -1,0 +1,4 @@
+set(CORE_TEST_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/ram_test.cpp
+    PARENT_SCOPE
+)
