@@ -167,7 +167,29 @@ DecodedInstruction Decoder::decodeAUIPC(uint32_t instr) const
 
 DecodedInstruction Decoder::decodeOP(uint32_t instr) const
 {
-    return DecodedInstruction();
+    uint8_t funct3 = decodeFunct3Field(instr);
+    uint8_t funct7 = decodeFunct7Field(instr);
+    uint8_t lutAddr = ((funct7 & static_cast<uint8_t>(0x20)) >> 2) |
+                      funct3;
+    // all func7 bits except func7[5] always have to be zero
+    uint8_t func7_OtherBits = (funct7 & static_cast<uint8_t>(0x5F));
+    InstructionId instrId = m_opGroupLUT[lutAddr];
+
+    DecodedInstruction dec;
+    dec.id = instrId;
+    dec.format = Format::R;
+    dec.rd = decodeRdField(instr);
+    dec.rs1 = decodeRs1Field(instr);
+    dec.rs2 = decodeRs2Field(instr);
+
+    if ((instrId == InstructionId::UnknownIllegal) ||
+        (func7_OtherBits != 0x00))
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+    }
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeJAL(uint32_t instr) const
