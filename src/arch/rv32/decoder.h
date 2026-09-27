@@ -1,0 +1,76 @@
+#pragma once
+#include <cstdint>
+#include <array>
+
+namespace RV32
+{
+
+enum class InstructionId
+{
+    Unknown, UnknownIllegal,
+    ADD, SUB, XOR, OR, AND, SLL, SRL, SRA, SLT, SLTU,
+    ADDI, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLTI, SLTIU,
+    LB, LH, LW, LBU, LHU,
+    SB, SH, SW,
+    BEQ, BNE, BLT, BGE, BLTU, BGEU,
+    JAL, JALR,
+    LUI, AUIPC,
+    ECALL, EBREAK,
+    FENCE
+};
+
+enum class Format { R, I, S, B, U, J, Unknown };
+
+struct DecodedInstruction
+{
+    InstructionId id = InstructionId::Unknown;
+    Format format = Format::Unknown;
+
+    uint8_t rd = 0;
+    uint8_t rs1 = 0;
+    uint8_t rs2 = 0;
+
+    int32_t imm = 0;
+};
+
+class Decoder
+{
+private:
+    using OpcodeDecoderFunc = DecodedInstruction (Decoder::*)(uint32_t) const;
+
+    std::array<OpcodeDecoderFunc, 128> m_instTypeDecoderLUT;
+
+    std::array<InstructionId, 8> m_immGroupLUT;
+    // (func7[5] | func3[2:0]) -> INSTR
+    std::array<InstructionId, 16> m_opGroupLUT;
+
+    DecodedInstruction decodeOP_IMM(uint32_t instr) const;
+    DecodedInstruction decodeLUI(uint32_t instr) const;
+    DecodedInstruction decodeAUIPC(uint32_t instr) const;
+    DecodedInstruction decodeOP(uint32_t instr) const;
+    DecodedInstruction decodeJAL(uint32_t instr) const;
+    DecodedInstruction decodeJALR(uint32_t instr) const;
+    DecodedInstruction decodeBRANCH(uint32_t instr) const;
+    DecodedInstruction decodeLOAD(uint32_t instr) const;
+    DecodedInstruction decodeSTORE(uint32_t instr) const;
+    DecodedInstruction decodeMISC_MEM(uint32_t instr) const;
+    DecodedInstruction decodeSYSTEM(uint32_t instr) const;
+
+    int32_t decodeImmFieldForTypeI(uint32_t instr) const;
+    int32_t decodeImmFieldForTypeU(uint32_t instr) const;
+    uint8_t decodeRdField(uint32_t instr) const;
+    uint8_t decodeRs1Field(uint32_t instr) const;
+    uint8_t decodeRs2Field(uint32_t instr) const;
+    uint8_t decodeFunct3Field(uint32_t instr) const;
+    uint8_t decodeFunct7Field(uint32_t instr) const;
+
+    void mapInstTypeDecoderLUT();
+    void mapImmGroupLUT();
+    void mapOpGroupLUT();
+public:
+    Decoder();
+    static bool checkInstruction(InstructionId instrId);
+    DecodedInstruction decode(uint32_t instr);
+};
+
+} // namespace RV32

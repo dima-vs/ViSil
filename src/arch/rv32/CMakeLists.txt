@@ -1,6 +1,8 @@
 set(RV32_Sources
     register_file.h
     register_file.cpp
+    decoder.h
+    decoder.cpp
 )
 
 add_library(RV32_Lib STATIC ${RV32_Sources})
