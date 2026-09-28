@@ -16,7 +16,7 @@ enum class InstructionId
     JAL, JALR,
     LUI, AUIPC,
     ECALL, EBREAK,
-    FENCE,
+    FENCE, FENCE_TSO, PAUSE,
     Count
 };
 
@@ -46,6 +46,7 @@ private:
     std::array<InstructionId, 16> m_opGroupLUT;
     std::array<InstructionId, 8> m_branchGroupLUT;
     std::array<InstructionId, 8> m_loadGroupLUT;
+    std::array<InstructionId, 8> m_storeGroupLUT;
 
     DecodedInstruction decodeOP_IMM(uint32_t instr) const;
     DecodedInstruction decodeLUI(uint32_t instr) const;
@@ -63,6 +64,7 @@ private:
     int32_t decodeImmFieldForTypeU(uint32_t instr) const;
     int32_t decodeImmFieldForTypeJ(uint32_t instr) const;
     int32_t decodeImmFieldForTypeB(uint32_t instr) const;
+    int32_t decodeImmFieldForTypeS(uint32_t instr) const;
 
     uint8_t decodeRdField(uint32_t instr) const;
     uint8_t decodeRs1Field(uint32_t instr) const;
@@ -75,6 +77,7 @@ private:
     void mapOpGroupLUT();
     void mapBranchGroupLUT();
     void mapLoadGroupLUT();
+    void mapStoreGroupLUT();
 public:
     Decoder();
     static bool checkInstruction(InstructionId instrId);

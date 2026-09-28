@@ -11,6 +11,7 @@ Decoder::Decoder()
     mapOpGroupLUT();
     mapBranchGroupLUT();
     mapLoadGroupLUT();
+    mapStoreGroupLUT();
 }
 
 bool Decoder::checkInstruction(InstructionId instrId)
@@ -93,6 +94,15 @@ void Decoder::mapLoadGroupLUT()
     m_loadGroupLUT[0b101] = InstructionId::LHU;
 }
 
+void Decoder::mapStoreGroupLUT()
+{
+    m_storeGroupLUT.fill(InstructionId::UnknownIllegal);
+
+    m_storeGroupLUT[0b000] = InstructionId::SB;
+    m_storeGroupLUT[0b001] = InstructionId::SH;
+    m_storeGroupLUT[0b010] = InstructionId::SW;
+}
+
 int32_t Decoder::decodeImmFieldForTypeI(uint32_t instr) const
 {
     return static_cast<int32_t>(instr) >> 20;
@@ -121,6 +131,14 @@ int32_t Decoder::decodeImmFieldForTypeB(uint32_t instr) const
         ((static_cast<int32_t>(instr) & 0x7E000000) >> 1) |
         ((static_cast<int32_t>(instr) & 0x00000F00) << 12)
        ) >> 19;
+}
+
+int32_t Decoder::decodeImmFieldForTypeS(uint32_t instr) const
+{
+    return (
+        (static_cast<int32_t>(instr) & 0xFE000000) |
+        ((static_cast<int32_t>(instr) & 0x00000F80) << 13)
+        ) >> 20;
 }
 
 uint8_t Decoder::decodeRdField(uint32_t instr) const
@@ -319,17 +337,95 @@ DecodedInstruction Decoder::decodeLOAD(uint32_t instr) const
 
 DecodedInstruction Decoder::decodeSTORE(uint32_t instr) const
 {
-    return DecodedInstruction();
+    uint8_t funct3 = decodeFunct3Field(instr);
+    InstructionId instrId = m_storeGroupLUT[funct3];
+
+    DecodedInstruction dec;
+
+    dec.id = instrId;
+    dec.format = Format::S;
+    dec.rs1 = decodeRs1Field(instr);
+    dec.rs2 = decodeRs2Field(instr);
+    dec.imm = decodeImmFieldForTypeS(instr);
+
+    if (instrId == InstructionId::UnknownIllegal)
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+    }
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeMISC_MEM(uint32_t instr) const
 {
-    return DecodedInstruction();
+    uint8_t funct3 = decodeFunct3Field(instr);
+    DecodedInstruction dec;
+
+    if (funct3 != 0b000)
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+        return dec;
+    }
+
+    constexpr uint32_t fenceTsoInstr = 0x8330000F;
+    constexpr uint32_t pauseInstr = 0x0100000F;
+
+    switch (instr)
+    {
+    case fenceTsoInstr:
+        dec.id = InstructionId::FENCE_TSO;
+        break;
+    case pauseInstr:
+        dec.id = InstructionId::PAUSE;
+        break;
+    default:
+        dec.id = InstructionId::FENCE;
+        break;
+    }
+
+    dec.format = Format::I;
+    dec.rd = decodeRdField(instr);
+    dec.rs1 = decodeRs1Field(instr);
+    dec.imm = decodeImmFieldForTypeI(instr);
+
+    if (dec.rd != 0 || dec.rs1 != 0)
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+    }
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeSYSTEM(uint32_t instr) const
 {
-    return DecodedInstruction();
+    constexpr uint32_t ecallInstr = 0x00000073;
+    constexpr uint32_t ebreakInstr = 0x00100073;
+
+    DecodedInstruction dec;
+
+    dec.format = Format::I;
+    dec.rd = decodeRdField(instr);
+    dec.rs1 = decodeRs1Field(instr);
+    dec.imm = decodeImmFieldForTypeI(instr);
+
+    switch (instr)
+    {
+    case ecallInstr:
+        dec.id = InstructionId::ECALL;
+        break;
+    case ebreakInstr:
+        dec.id = InstructionId::EBREAK;
+        break;
+    default:
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+        break;
+    }
+
+    return dec;
 }
 
 } // namespace RV32
