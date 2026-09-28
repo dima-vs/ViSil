@@ -16,7 +16,8 @@ enum class InstructionId
     JAL, JALR,
     LUI, AUIPC,
     ECALL, EBREAK,
-    FENCE
+    FENCE,
+    Count
 };
 
 enum class Format { R, I, S, B, U, J, Unknown };

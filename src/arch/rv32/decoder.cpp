@@ -14,6 +14,9 @@ Decoder::Decoder()
 
 bool Decoder::checkInstruction(InstructionId instrId)
 {
+    if (instrId >= InstructionId::Count)
+        return false;
+
     return (instrId != InstructionId::Unknown) &&
            (instrId != InstructionId::UnknownIllegal);
 }
