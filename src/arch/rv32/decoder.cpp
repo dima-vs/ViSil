@@ -8,6 +8,8 @@ Decoder::Decoder()
 {
     mapInstTypeDecoderLUT();
     mapImmGroupLUT();
+    mapOpGroupLUT();
+    mapBranchGroupLUT();
 }
 
 bool Decoder::checkInstruction(InstructionId instrId)
@@ -64,6 +66,18 @@ void Decoder::mapOpGroupLUT()
     m_opGroupLUT[0b0'111] = InstructionId::AND;
 }
 
+void Decoder::mapBranchGroupLUT()
+{
+    m_branchGroupLUT.fill(InstructionId::UnknownIllegal);
+
+    m_branchGroupLUT[0b000] = InstructionId::BEQ;
+    m_branchGroupLUT[0b001] = InstructionId::BNE;
+    m_branchGroupLUT[0b100] = InstructionId::BLT;
+    m_branchGroupLUT[0b101] = InstructionId::BGE;
+    m_branchGroupLUT[0b110] = InstructionId::BLTU;
+    m_branchGroupLUT[0b111] = InstructionId::BGEU;
+}
+
 int32_t Decoder::decodeImmFieldForTypeI(uint32_t instr) const
 {
     return static_cast<int32_t>(instr) >> 20;
@@ -72,6 +86,26 @@ int32_t Decoder::decodeImmFieldForTypeI(uint32_t instr) const
 int32_t Decoder::decodeImmFieldForTypeU(uint32_t instr) const
 {
     return static_cast<int32_t>(instr) & 0xFFFFF000;
+}
+
+int32_t Decoder::decodeImmFieldForTypeJ(uint32_t instr) const
+{
+    return (
+        (static_cast<int32_t>(instr) & 0x80000000) |
+        ((static_cast<int32_t>(instr) & 0x000FF000) << 11) |
+        ((static_cast<int32_t>(instr) & 0x00100000) << 2) |
+        ((static_cast<int32_t>(instr) & 0x7FE00000) >> 9)
+            ) >> 11;
+}
+
+int32_t Decoder::decodeImmFieldForTypeB(uint32_t instr) const
+{
+    return (
+        (static_cast<int32_t>(instr) & 0x80000000) |
+        ((static_cast<int32_t>(instr) & 0x00000080) << 23) |
+        ((static_cast<int32_t>(instr) & 0x7E000000) >> 1) |
+        ((static_cast<int32_t>(instr) & 0x00000F00) << 12)
+       ) >> 19;
 }
 
 uint8_t Decoder::decodeRdField(uint32_t instr) const
@@ -194,17 +228,57 @@ DecodedInstruction Decoder::decodeOP(uint32_t instr) const
 
 DecodedInstruction Decoder::decodeJAL(uint32_t instr) const
 {
-    return DecodedInstruction();
+    DecodedInstruction dec;
+
+    dec.id = InstructionId::JAL;
+    dec.format = Format::J;
+    dec.imm = decodeImmFieldForTypeJ(instr);
+    dec.rd = decodeRdField(instr);
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeJALR(uint32_t instr) const
 {
-    return DecodedInstruction();
+    DecodedInstruction dec;
+
+    uint8_t funct3 = decodeFunct3Field(instr);
+    if (funct3 != 0b000)
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+        return dec;
+    }
+
+    dec.id = InstructionId::JALR;
+    dec.format = Format::I;
+    dec.rd = decodeRdField(instr);
+    dec.rs1 = decodeRs1Field(instr);
+    dec.imm = decodeImmFieldForTypeI(instr);
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeBRANCH(uint32_t instr) const
 {
-    return DecodedInstruction();
+    uint8_t funct3 = decodeFunct3Field(instr);
+    InstructionId instrId = m_branchGroupLUT[funct3];
+
+    DecodedInstruction dec;
+
+    dec.id = instrId;
+    dec.format = Format::B;
+    dec.rs1 = decodeRs1Field(instr);
+    dec.rs2 = decodeRs2Field(instr);
+    dec.imm = decodeImmFieldForTypeB(instr);
+
+    if (instrId == InstructionId::UnknownIllegal)
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+    }
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeLOAD(uint32_t instr) const
