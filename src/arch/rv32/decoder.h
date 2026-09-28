@@ -45,6 +45,7 @@ private:
     // (func7[5] | func3[2:0]) -> INSTR
     std::array<InstructionId, 16> m_opGroupLUT;
     std::array<InstructionId, 8> m_branchGroupLUT;
+    std::array<InstructionId, 8> m_loadGroupLUT;
 
     DecodedInstruction decodeOP_IMM(uint32_t instr) const;
     DecodedInstruction decodeLUI(uint32_t instr) const;
@@ -73,6 +74,7 @@ private:
     void mapImmGroupLUT();
     void mapOpGroupLUT();
     void mapBranchGroupLUT();
+    void mapLoadGroupLUT();
 public:
     Decoder();
     static bool checkInstruction(InstructionId instrId);

@@ -10,6 +10,7 @@ Decoder::Decoder()
     mapImmGroupLUT();
     mapOpGroupLUT();
     mapBranchGroupLUT();
+    mapLoadGroupLUT();
 }
 
 bool Decoder::checkInstruction(InstructionId instrId)
@@ -79,6 +80,17 @@ void Decoder::mapBranchGroupLUT()
     m_branchGroupLUT[0b101] = InstructionId::BGE;
     m_branchGroupLUT[0b110] = InstructionId::BLTU;
     m_branchGroupLUT[0b111] = InstructionId::BGEU;
+}
+
+void Decoder::mapLoadGroupLUT()
+{
+    m_loadGroupLUT.fill(InstructionId::UnknownIllegal);
+
+    m_loadGroupLUT[0b000] = InstructionId::LB;
+    m_loadGroupLUT[0b001] = InstructionId::LH;
+    m_loadGroupLUT[0b010] = InstructionId::LW;
+    m_loadGroupLUT[0b100] = InstructionId::LBU;
+    m_loadGroupLUT[0b101] = InstructionId::LHU;
 }
 
 int32_t Decoder::decodeImmFieldForTypeI(uint32_t instr) const
@@ -286,7 +298,23 @@ DecodedInstruction Decoder::decodeBRANCH(uint32_t instr) const
 
 DecodedInstruction Decoder::decodeLOAD(uint32_t instr) const
 {
-    return DecodedInstruction();
+    uint8_t funct3 = decodeFunct3Field(instr);
+    InstructionId instrId = m_loadGroupLUT[funct3];
+    DecodedInstruction dec;
+
+    dec.id = instrId;
+    dec.format = Format::I;
+    dec.rd = decodeRdField(instr);
+    dec.rs1 = decodeRs1Field(instr);
+    dec.imm = decodeImmFieldForTypeI(instr);
+
+    if (instrId == InstructionId::UnknownIllegal)
+    {
+        dec.id = InstructionId::Unknown;
+        dec.format = Format::Unknown;
+    }
+
+    return dec;
 }
 
 DecodedInstruction Decoder::decodeSTORE(uint32_t instr) const
