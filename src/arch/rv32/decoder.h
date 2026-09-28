@@ -81,7 +81,7 @@ private:
 public:
     Decoder();
     static bool checkInstruction(InstructionId instrId);
-    DecodedInstruction decode(uint32_t instr);
+    DecodedInstruction decode(uint32_t instr) const;
 };
 
 } // namespace RV32

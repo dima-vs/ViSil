@@ -166,6 +166,20 @@ uint8_t Decoder::decodeFunct7Field(uint32_t instr) const
     return static_cast<uint8_t>((instr >> 25) & 0x7F);
 }
 
+DecodedInstruction Decoder::decode(uint32_t instr) const
+{
+    uint8_t opcode = static_cast<uint8_t>(instr & 0x7F);
+    auto decoder = m_instTypeDecoderLUT[opcode];
+
+    if (decoder != nullptr)
+        return (this->*decoder)(instr);
+
+    DecodedInstruction unknown;
+    unknown.id = InstructionId::Unknown;
+    unknown.format = Format::Unknown;
+    return unknown;
+}
+
 DecodedInstruction Decoder::decodeOP_IMM(uint32_t instr) const
 {
     uint8_t funct3 = decodeFunct3Field(instr);
