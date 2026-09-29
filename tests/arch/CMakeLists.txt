@@ -1,0 +1,3 @@
+add_subdirectory(rv32)
+
+set(ARCH_RV32_TEST_SOURCES ${ARCH_RV32_TEST_SOURCES} PARENT_SCOPE)
