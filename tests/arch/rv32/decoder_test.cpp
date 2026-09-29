@@ -232,7 +232,7 @@ TEST_F(DecoderTest, Decode_TypeI_Instructions)
     EXPECT_EQ(decInst.rd, 10);
     EXPECT_EQ(decInst.rs1, 31);
 
-    // slti x10, x4, -10
+    // slti x10, x4, 2047
     setFunct3(0b010);
     setRs1(4);
     setImmI(2047);
@@ -243,7 +243,7 @@ TEST_F(DecoderTest, Decode_TypeI_Instructions)
     EXPECT_EQ(decInst.rs1, 4);
     EXPECT_EQ(decInst.imm, 2047);
 
-    // sltiu x10, x4, -10
+    // sltiu x10, x4, -2048
     setFunct3(0b011);
     setImmI(-2048);
     decInst = decoder.decode(rawInstr);
@@ -253,6 +253,7 @@ TEST_F(DecoderTest, Decode_TypeI_Instructions)
 
     // xori x10, x4, -10
     setFunct3(0b100);
+    setImmI(-10);
     decInst = decoder.decode(rawInstr);
     EXPECT_EQ(decInst.id, InstructionId::XORI);
     EXPECT_EQ(decInst.format, Format::I);
@@ -300,7 +301,7 @@ TEST_F(DecoderTest, Decode_TypeI_Instructions)
     // UnknownInstr
     setOpcode(0b0010011);
     setFunct3(0b101);
-    setImmI(32); // immidiate of shift instructions must be 0 to 31
+    setImmI(32); // immediate of shift instructions must be 0 to 31
     decInst = decoder.decode(rawInstr);
     EXPECT_EQ(decInst.id, InstructionId::Unknown);
     EXPECT_EQ(decInst.format, Format::Unknown);
