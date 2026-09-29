@@ -115,22 +115,22 @@ int32_t Decoder::decodeImmFieldForTypeU(uint32_t instr) const
 
 int32_t Decoder::decodeImmFieldForTypeJ(uint32_t instr) const
 {
-    return (
-        (static_cast<int32_t>(instr) & 0x80000000) |
-        ((static_cast<int32_t>(instr) & 0x000FF000) << 11) |
-        ((static_cast<int32_t>(instr) & 0x00100000) << 2) |
-        ((static_cast<int32_t>(instr) & 0x7FE00000) >> 9)
-            ) >> 11;
+    uint32_t raw_j = (instr & 0x80000000) |
+                     ((instr & 0x000FF000) << 11) |
+                     ((instr & 0x00100000) << 2)  |
+                     ((instr & 0x7FE00000) >> 9);
+
+    return static_cast<int32_t>(raw_j) >> 11;
 }
 
 int32_t Decoder::decodeImmFieldForTypeB(uint32_t instr) const
 {
-    return (
-        (static_cast<int32_t>(instr) & 0x80000000) |
-        ((static_cast<int32_t>(instr) & 0x00000080) << 23) |
-        ((static_cast<int32_t>(instr) & 0x7E000000) >> 1) |
-        ((static_cast<int32_t>(instr) & 0x00000F00) << 12)
-       ) >> 19;
+    uint32_t raw_b = (instr & 0x80000000) |
+                     ((instr & 0x00000080) << 23) |
+                     ((instr & 0x7E000000) >> 1)  |
+                     ((instr & 0x00000F00) << 12);
+
+    return static_cast<int32_t>(raw_b) >> 19;
 }
 
 int32_t Decoder::decodeImmFieldForTypeS(uint32_t instr) const
