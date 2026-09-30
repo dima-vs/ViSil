@@ -3,6 +3,7 @@ set(RV32_Sources
     register_file.cpp
     decoder.h
     decoder.cpp
+    instruction.h
 )
 
 add_library(Arch_RV32_Lib STATIC ${RV32_Sources})
