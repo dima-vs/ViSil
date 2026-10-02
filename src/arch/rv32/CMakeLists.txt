@@ -4,6 +4,8 @@ set(RV32_Sources
     decoder.h
     decoder.cpp
     instruction.h
+    execution_unit.h
+    execution_unit.cpp
 )
 
 add_library(Arch_RV32_Lib STATIC ${RV32_Sources})
