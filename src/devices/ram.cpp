@@ -2,13 +2,13 @@
 #include <algorithm>
 #include <cstring>
 
-namespace Core
+namespace Devices
 {
 
 Ram::Ram(
     size_t blockCount, size_t blockSize,
     RamUninitBehavior ramBehavior,
-    Primitives::Endianness endianness) : IBusDevice(endianness),
+    Endianness endianness) : Core::IBusDevice(endianness),
     m_blockCount(blockCount),
     m_blockSize(blockSize),
     m_blocks(blockCount),
@@ -18,7 +18,7 @@ Ram::Ram(
     m_capacity = m_blockCount * m_blockSize;
 }
 
-BusStatus Ram::readBlock(uint64_t addr, uint8_t* buf, size_t size)
+Core::BusStatus Ram::readBlock(uint64_t addr, uint8_t* buf, size_t size)
 {
     if (addr >= m_capacity || size > m_capacity || size > (m_capacity - addr))
         return BusStatus::UnmappedAddress;
@@ -49,7 +49,7 @@ BusStatus Ram::readBlock(uint64_t addr, uint8_t* buf, size_t size)
     return BusStatus::Ok;
 }
 
-BusStatus Ram::writeBlock(uint64_t addr, const uint8_t* buf, size_t size)
+Core::BusStatus Ram::writeBlock(uint64_t addr, const uint8_t* buf, size_t size)
 {
     if (addr >= m_capacity || size > m_capacity || size > (m_capacity - addr))
         return BusStatus::UnmappedAddress;
@@ -76,7 +76,7 @@ BusStatus Ram::writeBlock(uint64_t addr, const uint8_t* buf, size_t size)
     return BusStatus::Ok;
 }
 
-BusStatus Ram::readBytesWithUninitBehavior(
+Core::BusStatus Ram::readBytesWithUninitBehavior(
     size_t blockIndex,
     size_t offset,
     uint8_t* destBuf,
@@ -118,4 +118,4 @@ void Ram::allocateBlock(size_t blockIndex)
     }
 }
 
-} // namespace Core
+} // namespace Devices

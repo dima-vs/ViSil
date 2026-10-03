@@ -5,8 +5,6 @@ set(Core_Sources
     system_bus.cpp
     primitives.h
     types.h
-    ram.h
-    ram.cpp
     bus_chain_node.h
 )
 

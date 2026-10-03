@@ -2,6 +2,7 @@
 #include "ram.h"
 
 using namespace Core;
+using namespace Devices;
 
 TEST(RamTest, ReadWrite32LittleEndian)
 {

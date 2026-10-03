@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-namespace Core
+namespace Devices
 {
 
 enum class RamUninitBehavior
@@ -15,9 +15,11 @@ enum class RamUninitBehavior
     // HardwareFault
 };
 
-class Ram : public IBusDevice
+class Ram : public Core::IBusDevice
 {
 private:
+    using BusStatus = Core::BusStatus;
+    using Endianness = Core::Primitives::Endianness;
     // size of a single physically allocated block
     uint32_t m_blockSize;
     uint32_t m_blockCount;
@@ -40,11 +42,11 @@ public:
     Ram(
         size_t blockCount, size_t blockSize=4*1024,
         RamUninitBehavior ramBehavior=RamUninitBehavior::ZeroFill,
-        Primitives::Endianness endianness = Primitives::Endianness::Little
+        Endianness endianness = Endianness::Little
         );
 
     BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) override;
     BusStatus writeBlock(uint64_t addr, const uint8_t* buf, size_t size) override;
 };
 
-} // namespace Core
+} // namespace Devices

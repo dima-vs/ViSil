@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(src/core)
 add_subdirectory(src/arch)
+add_subdirectory(src/devices)
 add_subdirectory(src/cli)
 
 enable_testing()

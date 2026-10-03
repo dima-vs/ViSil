@@ -6,6 +6,7 @@
 
 using namespace RV32;
 using namespace Core;
+using namespace Devices;
 
 class InstrBuilder
 {
