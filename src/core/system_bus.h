@@ -19,7 +19,7 @@ private:
     std::vector<MemoryMapEntry> m_devices;
 
 public:
-    SystemBus(Primitives::Endianness endianness = Primitives::Endianness::Little)
+    SystemBus(Endianness endianness = Endianness::Little)
         : IBusDevice(endianness) {}
 
     void mapDevice(uint64_t baseAddress, uint64_t size, IBusDevice* device);

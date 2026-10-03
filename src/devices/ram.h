@@ -19,7 +19,7 @@ class Ram : public Core::IBusDevice
 {
 private:
     using BusStatus = Core::BusStatus;
-    using Endianness = Core::Primitives::Endianness;
+    using Endianness = Core::Endianness;
     // size of a single physically allocated block
     uint32_t m_blockSize;
     uint32_t m_blockCount;

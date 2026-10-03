@@ -28,7 +28,7 @@ TEST(RamTest, ReadWrite32BigEndian)
 {
     Ram ram(4, 4096, // 4 blocks, each 4 KB
         RamUninitBehavior::ZeroFill,
-        Primitives::Endianness::Big
+        Endianness::Big
         );
 
     uint32_t writeVal = 0x12345678;
@@ -60,7 +60,7 @@ TEST(RamTest, CrossPageAccess)
 {
     Ram ram(4, 64,
         RamUninitBehavior::ZeroFill,
-        Primitives::Endianness::Big
+        Endianness::Big
         );
     uint32_t val = 0x87654321;
 

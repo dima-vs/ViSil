@@ -3,8 +3,7 @@ set(Core_Sources
     bus_device_interface.h
     system_bus.h
     system_bus.cpp
-    primitives.h
-    types.h
+    common.h
     bus_chain_node.h
 )
 

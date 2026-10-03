@@ -11,7 +11,10 @@ protected:
     IBusDevice* m_next = nullptr;
 
 public:
-    explicit BusChainNode(IBusDevice* next_device) : m_next(next_device) {}
+    explicit BusChainNode(
+        IBusDevice* next_device,
+        Endianness endianness = Endianness::Little)
+        : IBusDevice(endianness), m_next(next_device) {}
     virtual ~BusChainNode() = default;
 
     BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) override

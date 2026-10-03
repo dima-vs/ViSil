@@ -1,25 +1,17 @@
 #pragma once
 #include <cstdint>
-#include "primitives.h"
+#include "common.h"
 
 namespace Core
 {
 
-enum class BusStatus
-{
-    Ok,
-    UnmappedAddress,
-    AccessFault,
-    MisalignedAccess
-};
-
 class IBusDevice
 {
 protected:
-    Primitives::Endianness m_endianness;
+    Endianness m_endianness;
 public:
     virtual ~IBusDevice() = default;
-    IBusDevice(Primitives::Endianness endianness) :
+    IBusDevice(Endianness endianness) :
         m_endianness(endianness) {}
 
     // size in bytes
@@ -38,7 +30,7 @@ public:
         if (status != BusStatus::Ok)
             return status;
 
-        if (m_endianness == Primitives::Endianness::Little)
+        if (m_endianness == Endianness::Little)
         {
             outVal = static_cast<uint16_t>(buf[0]) |
                      (static_cast<uint16_t>(buf[1]) << 8);
@@ -57,7 +49,7 @@ public:
         if (status != BusStatus::Ok)
             return status;
 
-        if (m_endianness == Primitives::Endianness::Little)
+        if (m_endianness == Endianness::Little)
         {
             outVal = static_cast<uint32_t>(buf[0]) |
                       (static_cast<uint32_t>(buf[1]) << 1*8)  |
@@ -79,7 +71,7 @@ public:
         if (status != BusStatus::Ok)
             return status;
 
-        if (m_endianness == Primitives::Endianness::Little)
+        if (m_endianness == Endianness::Little)
         {
             outVal = static_cast<uint64_t>(buf[0]) |
                      (static_cast<uint64_t>(buf[1]) << 1*8)  |
@@ -111,7 +103,7 @@ public:
     virtual BusStatus write16(uint64_t addr, uint16_t val)
     {
         uint8_t buf[2];
-        if (m_endianness == Primitives::Endianness::Little)
+        if (m_endianness == Endianness::Little)
         {
             buf[0] = static_cast<uint8_t>(val & 0xFF);
             buf[1] = static_cast<uint8_t>((val >> 8) & 0xFF);
@@ -126,7 +118,7 @@ public:
     virtual BusStatus write32(uint64_t addr, uint32_t val)
     {
         uint8_t buf[4];
-        if (m_endianness == Primitives::Endianness::Little)
+        if (m_endianness == Endianness::Little)
         {
             buf[0] = static_cast<uint8_t>(val & 0xFF);
             buf[1] = static_cast<uint8_t>((val >> 1*8) & 0xFF);
@@ -145,7 +137,7 @@ public:
     virtual BusStatus write64(uint64_t addr, uint64_t val)
     {
         uint8_t buf[8];
-        if (m_endianness == Primitives::Endianness::Little)
+        if (m_endianness == Endianness::Little)
         {
             buf[0] = static_cast<uint8_t>(val & 0xFF);
             buf[1] = static_cast<uint8_t>((val >> 1*8) & 0xFF);

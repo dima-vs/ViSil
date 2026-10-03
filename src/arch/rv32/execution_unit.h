@@ -3,7 +3,7 @@
 #include <array>
 #include "register_file.h"
 #include "instruction.h"
-#include "types.h"
+#include "common.h"
 #include "bus_device_interface.h"
 
 namespace RV32

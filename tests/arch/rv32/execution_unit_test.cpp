@@ -50,7 +50,7 @@ class ExecutionUnitTest : public ::testing::Test
 {
 protected:
     RegisterFile regFile;
-    Ram memory{4, 4096, RamUninitBehavior::ZeroFill, Primitives::Endianness::Little};
+    Ram memory{4, 4096, RamUninitBehavior::ZeroFill, Endianness::Little};
     ExecutionUnit eu{regFile, memory};
     std::vector<DecodedInstruction> program;
 
