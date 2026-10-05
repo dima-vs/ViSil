@@ -6,6 +6,8 @@ set(RV32_Sources
     instruction.h
     execution_unit.h
     execution_unit.cpp
+    cpu.h
+    cpu.cpp
 )
 
 add_library(Arch_RV32_Lib STATIC ${RV32_Sources})
