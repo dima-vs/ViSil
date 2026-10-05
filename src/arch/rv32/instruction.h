@@ -6,7 +6,6 @@ namespace RV32
 
 enum class InstructionId
 {
-    Unknown, UnknownIllegal,
     ADD, SUB, XOR, OR, AND, SLL, SRL, SRA, SLT, SLTU,
     ADDI, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLTI, SLTIU,
     LB, LH, LW, LBU, LHU,
@@ -16,7 +15,11 @@ enum class InstructionId
     LUI, AUIPC,
     ECALL, EBREAK,
     FENCE, FENCE_TSO, PAUSE,
-    Count
+
+    // Special values
+    Count,
+    Unknown,
+    UnknownIllegal
 };
 
 enum class Format { R, I, S, B, U, J, Unknown };
