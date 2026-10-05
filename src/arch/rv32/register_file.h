@@ -14,6 +14,8 @@ private:
     std::array<uint32_t, 31> m_gprArray{};
     uint32_t m_pc{0};
 public:
+    static constexpr uint8_t GPR_COUNT = 32;
+
     uint32_t readGPR(uint8_t index) const;
     void writeGPR(uint8_t index, uint32_t val);
     void resetAllGPR();
