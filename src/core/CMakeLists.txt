@@ -6,6 +6,8 @@ set(Core_Sources
     common.h
     bus_chain_node.h
     execution_env_interface.h
+    simulation_runner.h
+    simulation_runner.cpp
 )
 
 add_library(Core_Lib STATIC ${Core_Sources})

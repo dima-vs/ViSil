@@ -59,6 +59,16 @@ enum class ExecutionStatus : uint16_t
     MisalignedAccess
 };
 
+enum class StopReason
+{
+    StepCompleted,
+    BreakpointHit,
+    ExecutionHalted,
+    SyscallHalt,
+    CpuError,
+    UserRequested
+};
+
 struct CpuInfo
 {
     std::string_view archName;
