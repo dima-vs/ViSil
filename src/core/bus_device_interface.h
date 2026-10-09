@@ -15,6 +15,9 @@ public:
     IBusDevice(Endianness endianness) :
         m_endianness(endianness) {}
 
+    // address space size of a device in bytes
+    virtual uint64_t getSize() const = 0;
+
     // size in bytes
     virtual BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) = 0;
     virtual BusStatus writeBlock(uint64_t addr, const uint8_t* buf, size_t size) = 0;

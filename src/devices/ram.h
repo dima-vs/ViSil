@@ -45,6 +45,8 @@ public:
         Endianness endianness = Endianness::Little
         );
 
+    uint64_t getSize() const override;
+
     BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) override;
     BusStatus writeBlock(uint64_t addr, const uint8_t* buf, size_t size) override;
 };

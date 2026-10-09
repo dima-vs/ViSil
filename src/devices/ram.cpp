@@ -118,4 +118,9 @@ void Ram::allocateBlock(size_t blockIndex)
     }
 }
 
+uint64_t Ram::getSize() const
+{
+    return m_capacity;
+}
+
 } // namespace Devices
