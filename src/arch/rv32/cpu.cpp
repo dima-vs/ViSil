@@ -35,7 +35,7 @@ Core::ExecutionStatus Cpu::step()
 
 void Cpu::advancePcIfNeeded(Core::ExecutionStatus execStatus)
 {
-    if (!Core::isPcChanged(execStatus))
+    if (Core::isSuccess(execStatus) && !Core::isPcChanged(execStatus))
         m_regFile.advancePC(Cpu::PC_STEP_SIZE);
 }
 
