@@ -3,8 +3,8 @@ set(Gui_View_Sources
     mainwindow.cpp
     # memory_block_view.h
     # memory_block_view.cpp
-    # memory_block_delegate.h
-    # memory_block_delegate.cpp
+    memory_block_delegate.h
+    memory_block_delegate.cpp
     theme_manager.h
     theme_manager.cpp
 
