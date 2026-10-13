@@ -14,8 +14,19 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+add_subdirectory(core)
 add_subdirectory(devices)
 add_subdirectory(arch)
+
+add_executable(core_tests
+    ${CORE_TEST_SOURCES}
+)
+
+target_link_libraries(core_tests
+    PRIVATE
+        GTest::gtest_main
+        Core_Lib
+)
 
 add_executable(devices_tests
     ${DEVICES_TEST_SOURCES}
@@ -39,5 +50,6 @@ target_link_libraries(arch_rv32_tests
 )
 
 include(GoogleTest)
+gtest_discover_tests(core_tests)
 gtest_discover_tests(devices_tests)
 gtest_discover_tests(arch_rv32_tests)
