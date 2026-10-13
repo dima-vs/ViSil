@@ -30,6 +30,13 @@ public:
             return m_next->writeBlock(addr, buf, size);
         return BusStatus::AccessFault;
     }
+
+    BusStatus peekBlock(uint64_t addr, uint8_t* buf, size_t size) const override
+    {
+        if (m_next)
+            return m_next->peekBlock(addr, buf, size);
+        return BusStatus::AccessFault;
+    }
 };
 
 } // namespace Core

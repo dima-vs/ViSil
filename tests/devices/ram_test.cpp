@@ -118,3 +118,60 @@ TEST(RamTest, ReadWrite16LittleEndian)
     EXPECT_EQ(ram.read16(0x40, readVal16), BusStatus::Ok);
     EXPECT_EQ(readVal16, val16);
 }
+
+TEST(RamTest, PeekViaConstReference)
+{
+    Ram ram(4, 4096, RamUninitBehavior::ZeroFill, Endianness::Little);
+    uint32_t writeVal = 0xAABBCCDD;
+    EXPECT_EQ(ram.write32(0x10, writeVal), BusStatus::Ok);
+
+    const Ram& constRam = ram;
+
+    uint32_t peekVal = 0;
+    EXPECT_EQ(constRam.peek32(0x10, peekVal), BusStatus::Ok);
+    EXPECT_EQ(peekVal, writeVal);
+
+    uint8_t buf[4] = {0};
+    EXPECT_EQ(constRam.peekBlock(0x10, buf, 4), BusStatus::Ok);
+    EXPECT_EQ(buf[0], 0xDD);
+    EXPECT_EQ(buf[1], 0xCC);
+    EXPECT_EQ(buf[2], 0xBB);
+    EXPECT_EQ(buf[3], 0xAA);
+}
+
+TEST(RamTest, PeekUninitializedMemory)
+{
+    Ram ram(2, 4096, RamUninitBehavior::ZeroFill);
+    const Ram& constRam = ram;
+
+    uint64_t val64 = 0xFFFFFFFFFFFFFFFF;
+    EXPECT_EQ(constRam.peek64(0x200, val64), BusStatus::Ok);
+    EXPECT_EQ(val64, 0x0000000000000000);
+}
+
+TEST(RamTest, PeekOutOfBounds)
+{
+    Ram ram(2, 4096); // capacity: 8192 bytes
+    const Ram& constRam = ram;
+
+    uint32_t dummy = 0;
+    EXPECT_EQ(constRam.peek32(8192, dummy), BusStatus::UnmappedAddress);
+    EXPECT_EQ(constRam.peek32(8190, dummy), BusStatus::UnmappedAddress);
+
+    uint8_t buf[10];
+    EXPECT_EQ(constRam.peekBlock(8190, buf, 10), BusStatus::UnmappedAddress);
+}
+
+TEST(RamTest, PeekCrossPageAccess)
+{
+    Ram ram(4, 64, RamUninitBehavior::ZeroFill, Endianness::Little);
+    uint32_t writeVal = 0x87654321;
+    EXPECT_EQ(ram.write32(62, writeVal), BusStatus::Ok);
+
+    const Ram& constRam = ram;
+    uint32_t peekVal = 0;
+
+    // peek across page boundary [62-65]
+    EXPECT_EQ(constRam.peek32(62, peekVal), BusStatus::Ok);
+    EXPECT_EQ(peekVal, writeVal);
+}

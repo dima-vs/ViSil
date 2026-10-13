@@ -113,6 +113,41 @@ BusStatus SystemBus::write64(uint64_t addr, uint64_t val)
     return dev ? dev->write64(localAddr, val) : status;
 }
 
+BusStatus SystemBus::peekBlock(uint64_t addr, uint8_t* buf, size_t size) const
+{
+    uint64_t localAddr;
+    auto [dev, status] = routeAccess(addr, size, localAddr);
+    return dev ? dev->peekBlock(localAddr, buf, size) : status;
+}
+
+BusStatus SystemBus::peek8(uint64_t addr, uint8_t& outVal) const
+{
+    uint64_t localAddr;
+    auto [dev, status] = routeAccess(addr, 1, localAddr);
+    return dev ? dev->peek8(localAddr, outVal) : status;
+}
+
+BusStatus SystemBus::peek16(uint64_t addr, uint16_t& outVal) const
+{
+    uint64_t localAddr;
+    auto [dev, status] = routeAccess(addr, 2, localAddr);
+    return dev ? dev->peek16(localAddr, outVal) : status;
+}
+
+BusStatus SystemBus::peek32(uint64_t addr, uint32_t& outVal) const
+{
+    uint64_t localAddr;
+    auto [dev, status] = routeAccess(addr, 4, localAddr);
+    return dev ? dev->peek32(localAddr, outVal) : status;
+}
+
+BusStatus SystemBus::peek64(uint64_t addr, uint64_t& outVal) const
+{
+    uint64_t localAddr;
+    auto [dev, status] = routeAccess(addr, 8, localAddr);
+    return dev ? dev->peek64(localAddr, outVal) : status;
+}
+
 std::pair<IBusDevice*, BusStatus> SystemBus::routeAccess(
     uint64_t addr,
     uint64_t size,

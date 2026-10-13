@@ -24,6 +24,9 @@ public:
 
     Core::BusStatus readBlock(uint64_t, uint8_t*, size_t) override;
     Core::BusStatus writeBlock(uint64_t, const uint8_t*, size_t) override;
+
+    Core::BusStatus peekBlock(uint64_t, uint8_t*, size_t) const override;
+
 };
 
 } // namespace Devices

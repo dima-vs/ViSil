@@ -37,6 +37,11 @@ Core::BusStatus Uart::writeBlock(uint64_t, const uint8_t*, size_t)
     return Core::BusStatus::AccessFault;
 }
 
+Core::BusStatus Uart::peekBlock(uint64_t, uint8_t*, size_t) const
+{
+    return Core::BusStatus::AccessFault;
+}
+
 uint64_t Uart::getSize() const
 {
     return m_size;

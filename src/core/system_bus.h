@@ -46,6 +46,13 @@ public:
     BusStatus write32(uint64_t addr, uint32_t val) override;
     BusStatus read64(uint64_t addr, uint64_t& outVal) override;
     BusStatus write64(uint64_t addr, uint64_t val) override;
+
+    BusStatus peekBlock(uint64_t addr, uint8_t* buf, size_t size) const override;
+
+    BusStatus peek8(uint64_t addr, uint8_t& outVal) const override;
+    BusStatus peek16(uint64_t addr, uint16_t& outVal) const override;
+    BusStatus peek32(uint64_t addr, uint32_t& outVal) const override;
+    BusStatus peek64(uint64_t addr, uint64_t& outVal) const override;
 };
 
 } // namespace Core

@@ -37,7 +37,7 @@ private:
         size_t offset,
         uint8_t* destBuf,
         size_t bytesToRead
-        );
+        ) const;
 public:
     Ram(
         size_t blockCount, size_t blockSize=4*1024,
@@ -51,6 +51,8 @@ public:
 
     BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) override;
     BusStatus writeBlock(uint64_t addr, const uint8_t* buf, size_t size) override;
+
+    BusStatus peekBlock(uint64_t addr, uint8_t* buf, size_t size) const override;
 };
 
 } // namespace Devices

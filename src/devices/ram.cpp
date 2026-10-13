@@ -20,6 +20,11 @@ Ram::Ram(
 
 Core::BusStatus Ram::readBlock(uint64_t addr, uint8_t* buf, size_t size)
 {
+    return peekBlock(addr, buf, size);
+}
+
+Core::BusStatus Ram::peekBlock(uint64_t addr, uint8_t* buf, size_t size) const
+{
     if (addr >= m_capacity || size > m_capacity || size > (m_capacity - addr))
         return BusStatus::UnmappedAddress;
 
@@ -81,7 +86,7 @@ Core::BusStatus Ram::readBytesWithUninitBehavior(
     size_t offset,
     uint8_t* destBuf,
     size_t bytesToRead
-    )
+    ) const
 {
     // if block exists, read actual data
     if (m_blocks[blockIndex])
