@@ -5,23 +5,29 @@
 #include <QModelIndex>
 
 #include <cstdint>
-#include "ram.h"
+#include "bus_device_interface.h"
 
 class MemoryBlockModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 private:
-    const Devices::Ram &m_ram;
+    const Core::IBusDevice &m_device;
+    // Device base address.
+    // Required to access the device on a system bus.
+    uint64_t m_baseAddress;
+    uint64_t m_displayBlockSize = 256;
     int m_gridColumns = 4;
 public slots:
     void setGridColumns(int cols);
 public:
     MemoryBlockModel(
-        const Devices::Ram &ram,
+        const Core::IBusDevice &device,
+        uint64_t baseAddress = 0,
         QObject *parent = nullptr
         ) : QAbstractTableModel(parent),
-        m_ram(ram) {}
+        m_device(device),
+        m_baseAddress(baseAddress) {}
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;

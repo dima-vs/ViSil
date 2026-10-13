@@ -4,6 +4,7 @@
 #include "theme_manager.h"
 #include "memory_block_model.h"
 #include "memory_block_view.h"
+#include "ram.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +20,6 @@ int main(int argc, char *argv[])
     Devices::Ram ram(1000, 256);
     MemoryBlockModel model(ram);
     MemoryBlockView view;
-
 
     view.setModel(&model);
     QObject::connect(&view, &MemoryBlockView::columnsChanged,

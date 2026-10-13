@@ -18,11 +18,12 @@ int MemoryBlockModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    uint64_t totalBlocks = m_ram.getBlockCount();
-    if (totalBlocks == 0)
+    uint64_t totalSize = m_device.getSize();
+    if (totalSize == 0)
         return 0;
 
     // round up the value
+    uint64_t totalBlocks = (totalSize + m_displayBlockSize - 1) / m_displayBlockSize;
     return (totalBlocks + m_gridColumns - 1) / m_gridColumns;
 }
 
@@ -39,19 +40,22 @@ QVariant MemoryBlockModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
+    uint64_t totalSize = m_device.getSize();
+    uint64_t totalBlocks = (totalSize + m_displayBlockSize - 1) / m_displayBlockSize;
     uint64_t blockIndex = (index.row() * m_gridColumns) + index.column();
 
-    if (blockIndex >= m_ram.getBlockCount())
+    if (blockIndex >= totalBlocks)
         return QVariant();
 
     if (role == Qt::DisplayRole)
     {
-        uint64_t baseAddress = blockIndex * m_ram.getBlockSize();
+        uint64_t addr = blockIndex * m_displayBlockSize;
+        uint64_t absoluteAddr = m_baseAddress + addr;
+
         return QString("0x") + QString("%1")
-            .arg(baseAddress, 8, 16, QChar('0'))
-            .toUpper();
+                    .arg(absoluteAddr, 8, 16, QChar('0'))
+                    .toUpper();
     }
 
     return QVariant();
-
 }
