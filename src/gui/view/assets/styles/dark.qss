@@ -3,13 +3,13 @@ QTableView {
     border: 1px solid #2d2d2d;
 }
 
-MemoryBlockView QScrollBar:vertical {
+QScrollBar:vertical {
     background: #1e1e1e;
     width: 14px;
     margin: 0px;
 }
 
-MemoryBlockView QScrollBar::handle:vertical {
+QScrollBar::handle:vertical {
     background: #3e3e42;
     min-height: 30px;
 
@@ -17,26 +17,26 @@ MemoryBlockView QScrollBar::handle:vertical {
     border-radius: 2px;
 }
 
-MemoryBlockView QScrollBar::handle:vertical:hover {
+QScrollBar::handle:vertical:hover {
     background: #505055;
     border: 5px solid #1e1e1e;
     border-radius: 7px;
 }
 
-MemoryBlockView QScrollBar::handle:vertical:pressed {
+QScrollBar::handle:vertical:pressed {
     background: #68686d;
     border: 5px solid #1e1e1e;
     border-radius: 7px;
 }
 
-MemoryBlockView QScrollBar::add-line:vertical,
-MemoryBlockView QScrollBar::sub-line:vertical {
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
     border: none;
     background: none;
     height: 0px;
 }
 
-MemoryBlockView QScrollBar::add-page:vertical,
-MemoryBlockView QScrollBar::sub-page:vertical {
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
     background: none;
 }
