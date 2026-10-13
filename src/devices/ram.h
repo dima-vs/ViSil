@@ -46,6 +46,8 @@ public:
         );
 
     uint64_t getSize() const override;
+    uint64_t getBlockSize() const;
+    uint64_t getBlockCount() const;
 
     BusStatus readBlock(uint64_t addr, uint8_t* buf, size_t size) override;
     BusStatus writeBlock(uint64_t addr, const uint8_t* buf, size_t size) override;
