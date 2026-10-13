@@ -9,7 +9,7 @@ qt_add_executable(ViSil_GUI
     ${Gui_Sources}
 )
 
-# add_subdirectory(model)
+add_subdirectory(model)
 add_subdirectory(view)
 
 set_target_properties(ViSil_GUI PROPERTIES
@@ -19,5 +19,5 @@ set_target_properties(ViSil_GUI PROPERTIES
 target_link_libraries(ViSil_GUI
     PRIVATE
         Gui_View_Lib
-        # Gui_Model_Lib
+        Gui_Model_Lib
 )
