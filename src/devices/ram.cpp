@@ -128,14 +128,4 @@ uint64_t Ram::getSize() const
     return m_capacity;
 }
 
-uint64_t Ram::getBlockSize() const
-{
-    return m_blockSize;
-}
-
-uint64_t Ram::getBlockCount() const
-{
-    return m_blockCount;
-}
-
 } // namespace Devices
