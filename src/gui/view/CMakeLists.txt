@@ -5,8 +5,8 @@ set(Gui_View_Sources
     # memory_block_view.cpp
     # memory_block_delegate.h
     # memory_block_delegate.cpp
-    # theme_manager.h
-    # theme_manager.cpp
+    theme_manager.h
+    theme_manager.cpp
 
     assets/styles/resources.qrc
 )
