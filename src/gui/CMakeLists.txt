@@ -9,6 +9,7 @@ qt_add_executable(ViSil_GUI
     ${Gui_Sources}
 )
 
+add_subdirectory(common)
 add_subdirectory(model)
 add_subdirectory(view)
 
