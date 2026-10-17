@@ -7,6 +7,12 @@ set(Gui_View_Sources
     memory_block_delegate.cpp
     theme_manager.h
     theme_manager.cpp
+    # memory_word_view.h
+    # memory_word_view.cpp
+    # memory_word_delegate.h
+    # memory_word_delegate.cpp
+    memory_word_table_header.h
+    memory_word_table_header.cpp
 
     assets/styles/resources.qrc
 )
@@ -22,6 +28,7 @@ set_target_properties(Gui_View_Lib PROPERTIES
 target_link_libraries(Gui_View_Lib
     PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets
+        Gui_Common_Lib
 )
 
 target_include_directories(Gui_View_Lib PUBLIC
