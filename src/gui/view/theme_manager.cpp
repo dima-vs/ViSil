@@ -42,7 +42,19 @@ void ThemeManager::setTheme(ThemeType theme)
         m_colors[GuiElementColor::MemBlock_OddCellBackground] = QColor("#1F232C");
         m_colors[GuiElementColor::MemBlock_CellBorder] = QColor("#2D313E");
         m_colors[GuiElementColor::MemBlock_SelectedCellBorder] = QColor("#2A4B7C");
-        m_colors[GuiElementColor::MemBlock_CellText] = QColor("#ffffff");
+        m_colors[GuiElementColor::MemBlock_CellText] = QColor("#FFFFFF");
+
+        m_colors[GuiElementColor::MemWord_SelectedRowBackground] = QColor("#1E385B");
+        m_colors[GuiElementColor::MemWord_EvenRowBackground] = QColor("#1A1D24");
+        m_colors[GuiElementColor::MemWord_OddRowBackground] = QColor("#1F232C");
+        m_colors[GuiElementColor::MemWord_HeaderSectionBackground] = QColor("#1E222D");
+        m_colors[GuiElementColor::MemWord_HeaderSectionText] = QColor("#A39BB4");
+        m_colors[GuiElementColor::MemWord_HeaderBottomLine] = QColor("#3A005E");
+        m_colors[GuiElementColor::MemWord_RawBytesCellText] = QColor("#FF1493");
+        m_colors[GuiElementColor::MemWord_AddressCellText] = QColor("#52E562");
+        m_colors[GuiElementColor::MemWord_NumericValCellText] = QColor("#5CE1E6");
+        m_colors[GuiElementColor::MemWord_DefaultCellText] = QColor("#F3F4F6");
+
     }
 
     loadQssForTheme(theme);

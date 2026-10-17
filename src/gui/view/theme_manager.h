@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QObject>
 #include <QMap>
 #include <QColor>
@@ -21,7 +23,19 @@ public:
         MemBlock_OddCellBackground,
         MemBlock_CellBorder,
         MemBlock_SelectedCellBorder,
-        MemBlock_CellText
+        MemBlock_CellText,
+
+        // Memory Word View
+        MemWord_SelectedRowBackground,
+        MemWord_EvenRowBackground,
+        MemWord_OddRowBackground,
+        MemWord_HeaderSectionText,
+        MemWord_HeaderSectionBackground,
+        MemWord_HeaderBottomLine,
+        MemWord_RawBytesCellText,
+        MemWord_AddressCellText,
+        MemWord_NumericValCellText,
+        MemWord_DefaultCellText
     };
 
 private:
