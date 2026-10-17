@@ -9,8 +9,8 @@ set(Gui_View_Sources
     theme_manager.cpp
     # memory_word_view.h
     # memory_word_view.cpp
-    # memory_word_delegate.h
-    # memory_word_delegate.cpp
+    memory_word_delegate.h
+    memory_word_delegate.cpp
     memory_word_table_header.h
     memory_word_table_header.cpp
 
