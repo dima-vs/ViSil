@@ -15,6 +15,7 @@ public:
     IBusDevice(Endianness endianness) :
         m_endianness(endianness) {}
 
+    virtual Endianness getEndianness() const { return m_endianness; }
     // address space size of a device in bytes
     virtual uint64_t getSize() const = 0;
 
