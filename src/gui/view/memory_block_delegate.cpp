@@ -1,6 +1,9 @@
 #include "memory_block_delegate.h"
 #include "theme_manager.h"
 
+namespace Gui
+{
+
 void MemoryBlockDelegate::paint(
     QPainter *painter,
     const QStyleOptionViewItem &option,
@@ -62,3 +65,5 @@ void MemoryBlockDelegate::paint(
 
     painter->restore();
 }
+
+} // namespace Gui

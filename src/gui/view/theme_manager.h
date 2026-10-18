@@ -4,6 +4,9 @@
 #include <QMap>
 #include <QColor>
 
+namespace Gui
+{
+
 class ThemeManager : public QObject
 {
     Q_OBJECT
@@ -52,3 +55,5 @@ public:
 signals:
     void themeChanged();
 };
+
+} // namespace Gui

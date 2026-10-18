@@ -4,6 +4,9 @@
 #include <QPen>
 #include <QBrush>
 
+namespace Gui
+{
+
 void MemoryWordDelegate::paint(
     QPainter *painter,
     const QStyleOptionViewItem &option,
@@ -15,7 +18,7 @@ void MemoryWordDelegate::paint(
 
     drawBackground(painter, option, index);
 
-    CellMetadata meta = index.data(Qt::UserRole).value<CellMetadata>();
+    MemWordCellMetadata meta = index.data(Qt::UserRole).value<MemWordCellMetadata>();
     drawCellText(painter, option, index, meta);
 
     painter->restore();
@@ -50,7 +53,7 @@ void MemoryWordDelegate::drawBackground(
     painter->fillRect(option.rect.adjusted(-1, 0, 1, 0), bgColor);
 }
 
-QFont MemoryWordDelegate::resolveFont(Column col) const
+QFont MemoryWordDelegate::resolveFont(MemWordColumn col) const
 {
     QFont font;
     font.setFamilies({
@@ -64,11 +67,11 @@ QFont MemoryWordDelegate::resolveFont(Column col) const
     font.setStyleHint(QFont::Monospace);
     font.setPointSize(11);
 
-    if (col == Column::RawBytes || col == Column::NumericValue)
+    if (col == MemWordColumn::RawBytes || col == MemWordColumn::NumericValue)
     {
         font.setBold(true);
     }
-    else if (col == Column::Address)
+    else if (col == MemWordColumn::Address)
     {
         font.setWeight(QFont::Medium);
     }
@@ -119,7 +122,7 @@ void MemoryWordDelegate::drawCellText(
     QPainter *painter,
     const QStyleOptionViewItem &option,
     const QModelIndex &index,
-    const CellMetadata &meta
+    const MemWordCellMetadata &meta
     ) const
 {
     using TM = ThemeManager;
@@ -135,7 +138,7 @@ void MemoryWordDelegate::drawCellText(
 
     switch (meta.column)
     {
-    case Column::RawBytes:
+    case MemWordColumn::RawBytes:
         drawGradientText(
             painter,
             txtRenderInf,
@@ -144,7 +147,7 @@ void MemoryWordDelegate::drawCellText(
             );
         break;
 
-    case Column::Address:
+    case MemWordColumn::Address:
         drawTextWithPrefix(
             painter,
             txtRenderInf,
@@ -152,7 +155,7 @@ void MemoryWordDelegate::drawCellText(
             );
         break;
 
-    case Column::NumericValue:
+    case MemWordColumn::NumericValue:
         drawTextWithPrefix(
             painter,
             txtRenderInf,
@@ -173,7 +176,7 @@ void MemoryWordDelegate::drawCellText(
 void MemoryWordDelegate::drawGradientText(
     QPainter *painter,
     const TextRenderInfo &txtRenderInf,
-    const CellMetadata &meta,
+    const MemWordCellMetadata &meta,
     const QColor &brightColor
     ) const
 {
@@ -235,3 +238,5 @@ void MemoryWordDelegate::drawPlainText(
     painter->setPen(textColor);
     painter->drawText(txtRenderInf.textPos, txtRenderInf.fullText);
 }
+
+} // namespace Gui

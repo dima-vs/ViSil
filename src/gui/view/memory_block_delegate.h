@@ -2,6 +2,9 @@
 #include <QPainter>
 #include <QPainterPath>
 
+namespace Gui
+{
+
 class MemoryBlockDelegate : public QStyledItemDelegate
 {
 public:
@@ -14,3 +17,5 @@ public:
         const QModelIndex &index
         ) const override;
 };
+
+} // namespace Gui

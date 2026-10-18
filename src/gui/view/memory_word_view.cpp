@@ -4,6 +4,9 @@
 
 #include <QHeaderView>
 
+namespace Gui
+{
+
 MemoryWordView::MemoryWordView(QWidget *parent) :
     QTableView(parent)
 {
@@ -20,3 +23,5 @@ MemoryWordView::MemoryWordView(QWidget *parent) :
 
 
 MemoryWordView::~MemoryWordView() {}
+
+} // namespace Gui

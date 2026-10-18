@@ -4,6 +4,9 @@
 #include <QVariantAnimation>
 #include "theme_manager.h"
 
+namespace Gui
+{
+
 class MemoryWordTableHeader : public QHeaderView
 {
     Q_OBJECT
@@ -33,3 +36,4 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 };
 
+} // namespace Gui

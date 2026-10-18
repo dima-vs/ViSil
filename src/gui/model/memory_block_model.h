@@ -7,6 +7,9 @@
 #include <cstdint>
 #include "bus_device_interface.h"
 
+namespace Gui
+{
+
 class MemoryBlockModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -33,3 +36,5 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
 };
+
+} // namespace Gui

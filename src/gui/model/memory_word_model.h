@@ -10,6 +10,9 @@
 #include "common.h"
 #include "memory_word_types.h"
 
+namespace Gui
+{
+
 class MemoryWordModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -52,3 +55,5 @@ public slots:
     void onHeaderSectionClicked(int logicalIndex);
     void cycleNumericFormat();
 };
+
+} // namespace Gui

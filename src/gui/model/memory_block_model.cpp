@@ -3,6 +3,9 @@
 #include <QChar>
 #include "memory_block_model.h"
 
+namespace Gui
+{
+
 void MemoryBlockModel::setGridColumns(int cols)
 {
     if (cols < 1 || m_gridColumns == cols)
@@ -59,3 +62,5 @@ QVariant MemoryBlockModel::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
+
+} // namespace Gui

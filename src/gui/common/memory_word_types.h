@@ -1,7 +1,10 @@
 #include "common.h"
 #include <QString>
 
-enum class Column
+namespace Gui
+{
+
+enum class MemWordColumn
 {
     Address = 0,
     RawBytes,     // memory cell bytes
@@ -9,11 +12,13 @@ enum class Column
     Count         // column values count
 };
 
-struct CellMetadata
+struct MemWordCellMetadata
 {
-    Column column;
+    MemWordColumn column;
     Core::Endianness endianness;
     QString prefix;
 };
 
-Q_DECLARE_METATYPE(CellMetadata)
+Q_DECLARE_METATYPE(MemWordCellMetadata)
+
+} // namespace Gui

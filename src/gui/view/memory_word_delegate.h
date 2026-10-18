@@ -6,6 +6,9 @@
 #include <QModelIndex>
 #include "memory_word_types.h"
 
+namespace Gui
+{
+
 class MemoryWordDelegate : public QStyledItemDelegate
 {
 private:
@@ -29,10 +32,10 @@ private:
         QPainter *painter,
         const QStyleOptionViewItem &option,
         const QModelIndex &index,
-        const CellMetadata &meta
+        const MemWordCellMetadata &meta
         ) const;
 
-    QFont resolveFont(Column col) const;
+    QFont resolveFont(MemWordColumn col) const;
     TextRenderInfo computeTextRenderInfo(
         const QFontMetrics &fm,
         const QRectF &rect,
@@ -44,7 +47,7 @@ private:
     void drawGradientText(
         QPainter *painter,
         const TextRenderInfo &txtRenderInf,
-        const CellMetadata &meta,
+        const MemWordCellMetadata &meta,
         const QColor &brightColor
         ) const;
 
@@ -69,3 +72,5 @@ public:
         const QModelIndex &index
         ) const override;
 };
+
+} // namespace Gui

@@ -2,6 +2,9 @@
 
 #include <QTableView>
 
+namespace Gui
+{
+
 class MemoryBlockView : public QTableView
 {
     Q_OBJECT
@@ -20,3 +23,5 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 };
+
+} // namespace Gui

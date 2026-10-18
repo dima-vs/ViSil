@@ -4,6 +4,9 @@
 #include <QHeaderView>
 #include <QObject>
 
+namespace Gui
+{
+
 MemoryBlockView::MemoryBlockView(QWidget *parent) :
     QTableView(parent)
 {
@@ -86,3 +89,5 @@ void MemoryBlockView::paintEvent(QPaintEvent *event)
 
 
 MemoryBlockView::~MemoryBlockView() {}
+
+} // namespace Gui

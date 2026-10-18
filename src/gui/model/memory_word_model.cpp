@@ -4,6 +4,9 @@
 #include <QString>
 #include <vector>
 
+namespace Gui
+{
+
 MemoryWordModel::MemoryWordModel(
     const Core::IBusDevice &device,
     QObject *parent
@@ -28,7 +31,7 @@ void MemoryWordModel::cycleNumericFormat()
         break;
     }
 
-    int colIdx = static_cast<int>(Column::NumericValue);
+    int colIdx = static_cast<int>(MemWordColumn::NumericValue);
     emit headerDataChanged(Qt::Horizontal, colIdx, colIdx);
 
     if (rowCount() > 0)
@@ -90,7 +93,7 @@ int MemoryWordModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return static_cast<int>(Column::Count);
+    return static_cast<int>(MemWordColumn::Count);
 }
 
 QVariant MemoryWordModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -98,18 +101,18 @@ QVariant MemoryWordModel::headerData(int section, Qt::Orientation orientation, i
     if (orientation != Qt::Horizontal)
         return QVariant();
 
-    Column columnSec = static_cast<Column>(section);
+    MemWordColumn columnSec = static_cast<MemWordColumn>(section);
     if (role == Qt::DisplayRole)
     {
-        switch (static_cast<Column>(section))
+        switch (static_cast<MemWordColumn>(section))
         {
-        case Column::Address:
+        case MemWordColumn::Address:
             return "Address";
 
-        case Column::RawBytes:
+        case MemWordColumn::RawBytes:
             return "Raw Bytes";
 
-        case Column::NumericValue:
+        case MemWordColumn::NumericValue:
             switch (m_numericFormat)
             {
             case NumericFormat::Hex:
@@ -127,7 +130,7 @@ QVariant MemoryWordModel::headerData(int section, Qt::Orientation orientation, i
 
     if (role == Qt::ToolTipRole)
     {
-        if (columnSec == Column::RawBytes)
+        if (columnSec == MemWordColumn::RawBytes)
         {
             return (m_wordEndianness == Core::Endianness::Little)?
                        "Little Endian" : "Big Endian";
@@ -140,7 +143,7 @@ QVariant MemoryWordModel::headerData(int section, Qt::Orientation orientation, i
 QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() ||
-        index.column() >= static_cast<int>(Column::Count) ||
+        index.column() >= static_cast<int>(MemWordColumn::Count) ||
         index.column() < 0
         )
         return QVariant();
@@ -149,13 +152,13 @@ QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
 
     if (role == Qt::UserRole)
     {
-        CellMetadata meta;
-        meta.column = static_cast<Column>(index.column());
+        MemWordCellMetadata meta;
+        meta.column = static_cast<MemWordColumn>(index.column());
         meta.endianness = m_wordEndianness;
 
         if (
-            (meta.column == Column::Address) ||
-            ((meta.column == Column::NumericValue) &&
+            (meta.column == MemWordColumn::Address) ||
+            ((meta.column == MemWordColumn::NumericValue) &&
             (m_numericFormat == NumericFormat::Hex))
             )
         {
@@ -169,9 +172,9 @@ QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
 
     if (role == Qt::DisplayRole)
     {
-        Column col = static_cast<Column>(index.column());
+        MemWordColumn col = static_cast<MemWordColumn>(index.column());
 
-        if (col == Column::Address)
+        if (col == MemWordColumn::Address)
         {
             int hexChars = m_addressWidthBytes * 2;
             return QString("%1")
@@ -191,7 +194,7 @@ QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
             return "?";
         }
 
-        if (col == Column::RawBytes)
+        if (col == MemWordColumn::RawBytes)
         {
             QString rawHex;
             for (int i = 0; i < m_displayWordWidth; ++i)
@@ -201,7 +204,7 @@ QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
             return rawHex.trimmed();
         }
 
-        if (col == Column::NumericValue)
+        if (col == MemWordColumn::NumericValue)
         {
             uint64_t val = 0;
             switch (m_displayWordWidth)
@@ -256,14 +259,16 @@ QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
 
 void MemoryWordModel::onHeaderSectionClicked(int logicalIndex)
 {
-    if (logicalIndex < 0 || logicalIndex >= static_cast<int>(Column::Count))
+    if (logicalIndex < 0 || logicalIndex >= static_cast<int>(MemWordColumn::Count))
         return;
 
-    Column col = static_cast<Column>(logicalIndex);
+    MemWordColumn col = static_cast<MemWordColumn>(logicalIndex);
     switch (col)
     {
-    case Column::NumericValue:
+    case MemWordColumn::NumericValue:
         cycleNumericFormat();
         break;
     }
 }
+
+} // namespace Gui

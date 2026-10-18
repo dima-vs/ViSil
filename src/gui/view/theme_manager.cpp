@@ -3,6 +3,9 @@
 #include <QApplication>
 #include <QLatin1String>
 
+namespace Gui
+{
+
 ThemeManager::ThemeManager()
 {
     setTheme(ThemeType::Dark);
@@ -65,3 +68,5 @@ QColor ThemeManager::getColor(GuiElementColor element) const
 {
     return m_colors.value(element, QColor(Qt::magenta));
 }
+
+} // namespace Gui

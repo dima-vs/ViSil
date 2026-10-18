@@ -6,6 +6,9 @@
 #include <QMouseEvent>
 #include "theme_manager.h"
 
+namespace Gui
+{
+
 MemoryWordTableHeader::MemoryWordTableHeader(QWidget *parent) :
     QHeaderView(Qt::Orientation::Horizontal, parent),
     m_baseColor(ThemeManager::instance().getColor(
@@ -194,3 +197,5 @@ void MemoryWordTableHeader::mouseDoubleClickEvent(QMouseEvent *event)
 {
     MemoryWordTableHeader::mousePressEvent(event);
 }
+
+} // namespace Gui
