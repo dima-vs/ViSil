@@ -38,7 +38,24 @@ public:
         MemWord_RawBytesCellText,
         MemWord_AddressCellText,
         MemWord_NumericValCellText,
-        MemWord_DefaultCellText
+        MemWord_DefaultCellText,
+
+        // Register File View
+        RegFile_CellBackground,
+        RegFile_PcBackground,
+        RegFile_SelectedBorderStart,
+        RegFile_SelectedBorderMid,
+        RegFile_SelectedBorderEnd,
+        RegFile_PcBorderStart,
+        RegFile_PcBorderMid,
+        RegFile_PcBorderEnd,
+        RegFile_NormalBorderStart,
+        RegFile_NormalBorderMid,
+        RegFile_NormalBorderEnd,
+        RegFile_RegNameText,
+        RegFile_ValuePrefixText,
+        RegFile_ValueText
+
     };
 
 private:

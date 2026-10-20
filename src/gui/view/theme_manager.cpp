@@ -58,6 +58,22 @@ void ThemeManager::setTheme(ThemeType theme)
         m_colors[GuiElementColor::MemWord_NumericValCellText] = QColor("#5CE1E6");
         m_colors[GuiElementColor::MemWord_DefaultCellText] = QColor("#F3F4F6");
 
+        m_colors[GuiElementColor::RegFile_CellBackground] = QColor("#14171D");
+        m_colors[GuiElementColor::RegFile_PcBackground] = QColor("#0E1014");
+        m_colors[GuiElementColor::RegFile_SelectedBorderStart] = QColor("#3B82F6");
+        m_colors[GuiElementColor::RegFile_SelectedBorderMid] = QColor("#1D4ED8");
+        m_colors[GuiElementColor::RegFile_SelectedBorderEnd] = QColor("#4C1D95");
+        m_colors[GuiElementColor::RegFile_PcBorderStart] = QColor("#4F5666");
+        m_colors[GuiElementColor::RegFile_PcBorderMid] = QColor("#2D333F");
+        m_colors[GuiElementColor::RegFile_PcBorderEnd] = QColor("#1A1D24");
+        m_colors[GuiElementColor::RegFile_NormalBorderStart] = QColor("#2C313C");
+        m_colors[GuiElementColor::RegFile_NormalBorderMid] = QColor("#20242D");
+        m_colors[GuiElementColor::RegFile_NormalBorderEnd] = QColor("#16191F");
+        m_colors[GuiElementColor::RegFile_RegNameText] = QColor("#D4D4D4");
+        m_colors[GuiElementColor::RegFile_ValueText] = QColor("#569CD6");
+        QColor prefixColor = m_colors[GuiElementColor::RegFile_ValueText];
+        prefixColor.setAlpha(100);
+        m_colors[GuiElementColor::RegFile_ValuePrefixText] = prefixColor;
     }
 
     loadQssForTheme(theme);
