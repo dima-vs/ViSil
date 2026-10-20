@@ -21,4 +21,5 @@ target_link_libraries(ViSil_GUI
     PRIVATE
         Gui_View_Lib
         Gui_Model_Lib
+        Arch_RV32_Lib
 )
