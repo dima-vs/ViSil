@@ -13,6 +13,10 @@ set(Gui_View_Sources
     memory_word_delegate.cpp
     memory_word_table_header.h
     memory_word_table_header.cpp
+    # register_file_view.h
+    # register_file_view.cpp
+    register_file_delegate.h
+    register_file_delegate.cpp
 
     assets/styles/resources.qrc
 )
