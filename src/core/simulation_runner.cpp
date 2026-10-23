@@ -78,4 +78,38 @@ StopReason SimulationRunner::executeStep(ExecutionStatus* outStatus)
     return StopReason::StepCompleted;
 }
 
+void SimulationRunner::addBreakpoint(uint64_t addr)
+{
+    std::lock_guard<std::mutex> lock(m_breakpointMutex);
+    m_breakpoints.insert(addr);
+}
+
+void SimulationRunner::removeBreakpoint(uint64_t addr)
+{
+    std::lock_guard<std::mutex> lock(m_breakpointMutex);
+    m_breakpoints.erase(addr);
+}
+
+void SimulationRunner::clearBreakpoints()
+{
+    std::lock_guard<std::mutex> lock(m_breakpointMutex);
+    m_breakpoints.clear();
+}
+
+bool SimulationRunner::hasBreakpoint(uint64_t addr) const
+{
+    std::lock_guard<std::mutex> lock(m_breakpointMutex);
+    return m_breakpoints.find(addr) != m_breakpoints.end();
+}
+
+void SimulationRunner::requestStop()
+{
+    m_stopRequested = true;
+}
+
+void SimulationRunner::setOnStoppedCallback(OnStoppedCallback cb)
+{
+    m_onStopped = cb;
+}
+
 } // namespace Core

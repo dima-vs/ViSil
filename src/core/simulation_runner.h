@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <functional>
 #include <unordered_set>
+#include <mutex>
 #include "cpu_interface.h"
 #include "execution_env_interface.h"
 
@@ -19,16 +20,20 @@ private:
     ICpu &m_cpu;
     std::unordered_set<uint64_t> m_breakpoints;
     std::atomic<bool> m_stopRequested{false};
+    mutable std::mutex m_breakpointMutex;
     OnStoppedCallback m_onStopped;
+
     StopReason executeStep(ExecutionStatus* outStatus = nullptr);
 public:
     SimulationRunner(IExecutionEnvironment &execEnv,ICpu &cpu);
 
-    void addBreakpoint(uint64_t addr) { m_breakpoints.insert(addr); }
-    void removeBreakpoint(uint64_t addr) { m_breakpoints.erase(addr); }
-    void clearBreakpoints() { m_breakpoints.clear(); }
-    void setOnStoppedCallback(OnStoppedCallback cb) { m_onStopped = cb; }
-    void requestStop() { m_stopRequested = true; }
+    void addBreakpoint(uint64_t addr);
+    void removeBreakpoint(uint64_t addr);
+    void clearBreakpoints();
+    bool hasBreakpoint(uint64_t addr) const;
+
+    void setOnStoppedCallback(OnStoppedCallback cb);
+    void requestStop();
 
     StopReason stepOnce();
     void runSteps(uint64_t stepCount);
