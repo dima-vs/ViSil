@@ -9,6 +9,7 @@ set(Core_Sources
     simulation_runner.h
     simulation_runner.cpp
     endian_utils.h
+    disassembler_interface.h
 )
 
 add_library(Core_Lib STATIC ${Core_Sources})
