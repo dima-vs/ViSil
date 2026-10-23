@@ -8,6 +8,8 @@ set(RV32_Sources
     execution_unit.cpp
     cpu.h
     cpu.cpp
+    rv32_disassembler.h
+    rv32_disassembler.cpp
 )
 
 add_library(Arch_RV32_Lib STATIC ${RV32_Sources})
