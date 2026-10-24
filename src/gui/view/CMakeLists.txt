@@ -17,8 +17,8 @@ set(Gui_View_Sources
     register_file_view.cpp
     register_file_delegate.h
     register_file_delegate.cpp
-    # memory_instruction_view.h
-    # memory_instruction_view.cpp
+    memory_instruction_view.h
+    memory_instruction_view.cpp
     memory_instruction_delegate.h
     memory_instruction_delegate.cpp
 
