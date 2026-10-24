@@ -39,6 +39,7 @@ void ThemeManager::setTheme(ThemeType theme)
 
     if (theme == ThemeType::Dark)
     {
+        // Memory Block View
         m_colors[GuiElementColor::MemBlock_SelectedRangeBorder] = QColor("#38BDF8");
         m_colors[GuiElementColor::MemBlock_SelectedCellBackground] = QColor("#1E385B");
         m_colors[GuiElementColor::MemBlock_EvenCellBackground] = QColor("#1A1D24");
@@ -47,6 +48,7 @@ void ThemeManager::setTheme(ThemeType theme)
         m_colors[GuiElementColor::MemBlock_SelectedCellBorder] = QColor("#2A4B7C");
         m_colors[GuiElementColor::MemBlock_CellText] = QColor("#FFFFFF");
 
+        // Memory Word View
         m_colors[GuiElementColor::MemWord_SelectedRowBackground] = QColor("#1E385B");
         m_colors[GuiElementColor::MemWord_EvenRowBackground] = QColor("#1A1D24");
         m_colors[GuiElementColor::MemWord_OddRowBackground] = QColor("#1F232C");
@@ -58,6 +60,7 @@ void ThemeManager::setTheme(ThemeType theme)
         m_colors[GuiElementColor::MemWord_NumericValCellText] = QColor("#5CE1E6");
         m_colors[GuiElementColor::MemWord_DefaultCellText] = QColor("#F3F4F6");
 
+        // Register File View
         m_colors[GuiElementColor::RegFile_CellBackground] = QColor("#14171D");
         m_colors[GuiElementColor::RegFile_PcBackground] = QColor("#0E1014");
         m_colors[GuiElementColor::RegFile_SelectedBorderStart] = QColor("#3B82F6");
@@ -74,6 +77,24 @@ void ThemeManager::setTheme(ThemeType theme)
         QColor prefixColor = m_colors[GuiElementColor::RegFile_ValueText];
         prefixColor.setAlpha(100);
         m_colors[GuiElementColor::RegFile_ValuePrefixText] = prefixColor;
+
+        // Memory Instruction View
+        QColor instrCellBg = QColor("#14171D");
+        m_colors[GuiElementColor::MemInstr_InstrCellBackground] = instrCellBg;
+        m_colors[GuiElementColor::MemInstr_SelectedCellBackground] = instrCellBg.lighter(140);
+        m_colors[GuiElementColor::MemInstr_SidePanelCellBackground] = instrCellBg.darker(120);
+        m_colors[GuiElementColor::MemInstr_AddrCodeSeparator] = QColor("#2D313E");
+        m_colors[GuiElementColor::MemInstr_BreakPoint] = QColor("#FF0000");
+        m_colors[GuiElementColor::MemInstr_BreakPointHover] = QColor("#64FF0000");
+        m_colors[GuiElementColor::MemInstr_AddressText] = QColor("#90A4AE");
+
+        m_colors[GuiElementColor::MemInstr_AsmTokenMnemonic] = QColor("#FFCA86");
+        m_colors[GuiElementColor::MemInstr_AsmTokenRegister] = QColor("#64B5F6");
+        m_colors[GuiElementColor::MemInstr_AsmTokenAddress] = QColor("#E06C9F");
+        m_colors[GuiElementColor::MemInstr_AsmTokenImmediate] = QColor("#5EEAD4");
+        m_colors[GuiElementColor::MemInstr_AsmTokenPunctuation] = QColor("#78909C");
+        m_colors[GuiElementColor::MemInstr_AsmTokenIncorrect] = QColor("#90A4AE");
+        m_colors[GuiElementColor::MemInstr_AsmTokenDefault] = QColor("#ECEFF1");
     }
 
     loadQssForTheme(theme);

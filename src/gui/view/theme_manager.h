@@ -54,8 +54,23 @@ public:
         RegFile_NormalBorderEnd,
         RegFile_RegNameText,
         RegFile_ValuePrefixText,
-        RegFile_ValueText
+        RegFile_ValueText,
 
+        // Memory Instruction View
+        MemInstr_InstrCellBackground,
+        MemInstr_SelectedCellBackground,
+        MemInstr_SidePanelCellBackground,
+        MemInstr_AddrCodeSeparator,
+        MemInstr_BreakPoint,
+        MemInstr_BreakPointHover,
+        MemInstr_AddressText,
+        MemInstr_AsmTokenMnemonic,
+        MemInstr_AsmTokenRegister,
+        MemInstr_AsmTokenAddress,
+        MemInstr_AsmTokenImmediate,
+        MemInstr_AsmTokenPunctuation,
+        MemInstr_AsmTokenIncorrect,
+        MemInstr_AsmTokenDefault
     };
 
 private:
