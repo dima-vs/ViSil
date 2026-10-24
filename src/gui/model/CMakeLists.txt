@@ -5,6 +5,8 @@ set(Gui_Model_Sources
     memory_word_model.cpp
     register_file_model.h
     register_file_model.cpp
+    memory_instruction_model.h
+    memory_instruction_model.cpp
 )
 
 add_library(Gui_Model_Lib STATIC ${Gui_Model_Sources})
