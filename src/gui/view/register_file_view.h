@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QTableView>
+#include <QModelIndex>
 
 namespace Gui
 {
@@ -14,6 +15,8 @@ public:
     ~RegisterFileView();
 
     void setModel(QAbstractItemModel *model) override;
+signals:
+    void numericFormatCycleRequested(const QModelIndex &index);
 };
 
 } // namespace Gui

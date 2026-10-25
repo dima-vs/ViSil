@@ -18,6 +18,9 @@ RegisterFileView::RegisterFileView(QWidget *parent) :
     verticalHeader()->setDefaultSectionSize(34);
 
     setShowGrid(false);
+
+    connect(this, &QTableView::doubleClicked,
+            this, &RegisterFileView::numericFormatCycleRequested);
 }
 
 
