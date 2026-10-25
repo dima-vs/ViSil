@@ -21,8 +21,8 @@ set(Gui_View_Sources
     memory_instruction_view.cpp
     memory_instruction_delegate.h
     memory_instruction_delegate.cpp
-    # debugger_panel.h
-    # debugger_panel.cpp
+    debugger_panel.h
+    debugger_panel.cpp
 
     assets/resources_styles.qrc
     assets/resources_icons.qrc
