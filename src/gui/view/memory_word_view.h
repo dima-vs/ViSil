@@ -12,6 +12,10 @@ class MemoryWordView : public QTableView
 public:
     MemoryWordView(QWidget *parent = nullptr);
     ~MemoryWordView();
+signals:
+    void numericFormatCycleRequested();
+private slots:
+    void onHeaderSectionClicked(int logicalIndex);
 };
 
 } // namespace Gui

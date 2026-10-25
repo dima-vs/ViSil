@@ -257,18 +257,4 @@ QVariant MemoryWordModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void MemoryWordModel::onHeaderSectionClicked(int logicalIndex)
-{
-    if (logicalIndex < 0 || logicalIndex >= static_cast<int>(MemWordColumn::Count))
-        return;
-
-    MemWordColumn col = static_cast<MemWordColumn>(logicalIndex);
-    switch (col)
-    {
-    case MemWordColumn::NumericValue:
-        cycleNumericFormat();
-        break;
-    }
-}
-
 } // namespace Gui
