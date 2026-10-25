@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/debug-panel/run96.png</file>
+        <file>icons/debug-panel/pause96.png</file>
+        <file>icons/debug-panel/resume96.png</file>
+        <file>icons/debug-panel/step-into100.png</file>
+    </qresource>
+</RCC>

@@ -55,3 +55,55 @@ QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: none;
 }
+
+
+QWidget#DebuggerPanel {
+    background-color: #14171D;
+    border-bottom: 2px solid #2D313E;
+}
+
+QWidget#DebuggerPanel QPushButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 0px;
+    padding: 4px;
+}
+
+QWidget#DebuggerPanel QPushButton:pressed {
+    padding-top: 5px;
+    padding-left: 5px;
+
+}
+
+QWidget#DebuggerPanel QPushButton:disabled {
+    opacity: 0.25;
+}
+
+QPushButton#runBtn:hover {
+    background-color: rgba(82, 229, 98, 0.12);
+    border: 1px solid #52E562;
+}
+
+QPushButton#runBtn:pressed {
+    background-color: rgba(82, 229, 98, 0.35);
+    border: 1px solid #3ca848;
+}
+
+QPushButton#pauseBtn:hover {
+    background-color: rgba(56, 189, 248, 0.12);
+    border: 1px solid #38BDF8;
+}
+QPushButton#pauseBtn:pressed {
+    background-color: rgba(56, 189, 248, 0.35);
+    border: 1px solid #228cb8;
+}
+
+QPushButton#stepIntoBtn:hover {
+    background-color: rgba(220, 225, 92, 0.12);
+    border: 1px solid #DCE15C;
+}
+
+QPushButton#stepIntoBtn:pressed {
+    background-color: rgba(220, 225, 92, 0.35);
+    border: 1px solid #a6a943;
+}
