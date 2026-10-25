@@ -2,6 +2,7 @@
 
 #include <QTableView>
 #include <QMouseEvent>
+#include <QModelIndex>
 
 namespace Gui
 {
@@ -17,6 +18,10 @@ public:
     void setModel(QAbstractItemModel *model) override;
 
     ~MemoryInstructionView();
+signals:
+    void breakpointToggled(uint64_t addr, const QModelIndex &index);
+private slots:
+    void handleClick(const QModelIndex &index);
 };
 
 } // namespace Gui

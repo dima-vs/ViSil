@@ -1,5 +1,6 @@
 #include "memory_instruction_view.h"
 #include "memory_instruction_delegate.h"
+#include "memory_instruction_types.h"
 #include <QHeaderView>
 
 namespace Gui
@@ -20,6 +21,9 @@ MemoryInstructionView::MemoryInstructionView(QWidget *parent) :
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
     setShowGrid(false);
+
+    connect(this, &QTableView::clicked,
+            this, &MemoryInstructionView::handleClick);
 }
 
 void MemoryInstructionView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -42,6 +46,17 @@ void MemoryInstructionView::setModel(QAbstractItemModel *model)
     }
 }
 
+void MemoryInstructionView::handleClick(const QModelIndex &index)
+{
+    if (!index.isValid())
+        return;
+
+    if (index.column() != static_cast<int>(Gui::MemInstrColumn::Breakpoint))
+        return;
+
+    uint64_t addr = index.data(static_cast<int>(Gui::MemInstrRole::AddressRole)).toULongLong();
+    emit breakpointToggled(addr, index);
+}
 
 MemoryInstructionView::~MemoryInstructionView() {}
 
