@@ -7,3 +7,6 @@
 It is **not yet fully functional** or ready for production use.
 
 Currently, primary development is focused on implementing support for the **RISC-V (RV32)** instruction set architecture.
+
+## Credits
+* UI icons provided by [Icons8](https://icons8.com)
