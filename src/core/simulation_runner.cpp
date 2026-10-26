@@ -9,7 +9,13 @@ SimulationRunner::SimulationRunner(IExecutionEnvironment &execEnv,ICpu &cpu) :
 
 StopReason SimulationRunner::stepOnce()
 {
-    return executeStep();
+    ExecutionStatus lastStatus = ExecutionStatus::Ok;
+    StopReason reason = executeStep(&lastStatus);
+
+    if (m_onStopped)
+        m_onStopped(reason, lastStatus);
+
+    return reason;
 }
 
 void SimulationRunner::runSteps(uint64_t stepCount)
