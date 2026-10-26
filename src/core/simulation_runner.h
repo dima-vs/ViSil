@@ -18,7 +18,11 @@ private:
 
     IExecutionEnvironment &m_execEnv;
     ICpu &m_cpu;
-    std::unordered_set<uint64_t> m_breakpoints;
+
+    std::unordered_set<uint64_t> m_sharedBreakpoints;
+    std::unordered_set<uint64_t> m_activeBreakpoints;
+    std::atomic<bool> m_breakpointsDirty{false};
+
     std::atomic<bool> m_stopRequested{false};
     mutable std::mutex m_breakpointMutex;
     OnStoppedCallback m_onStopped;
