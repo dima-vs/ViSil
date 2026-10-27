@@ -10,7 +10,8 @@ enum class MemInstrRole
 {
     DisassembledInstrRole = Qt::UserRole + 1,
     BreakPointRole,
-    AddressRole
+    AddressRole,
+    CurrentPcRole
 };
 
 enum class MemInstrColumn
