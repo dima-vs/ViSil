@@ -4,5 +4,6 @@
         <file>icons/debug-panel/pause96.png</file>
         <file>icons/debug-panel/resume96.png</file>
         <file>icons/debug-panel/step-into100.png</file>
+        <file>icons/instr-view/right-arrow-96.png</file>
     </qresource>
 </RCC>
