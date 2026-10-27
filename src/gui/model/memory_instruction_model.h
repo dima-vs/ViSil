@@ -22,6 +22,7 @@ private:
     const Core::IBusDevice &m_device;
     const Core::IDisassembler &m_disassembler;
 
+    uint64_t m_currentPc = 0;
     int m_wordWidth = 4;
     uint64_t m_blockBaseAddress = 0;
     uint64_t m_blockSize = 0;
@@ -36,6 +37,10 @@ public:
         const Core::IDisassembler &disassembler,
         QObject *parent = nullptr
         );
+
+    void setCurrentPc(uint64_t pc);
+    uint64_t getCurrentPc() const { return m_currentPc; }
+    int getRowByAddress(uint64_t address) const;
 
     void inspectBlock(uint64_t baseAddress, uint64_t blockSize);
 

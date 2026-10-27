@@ -59,6 +59,11 @@ QVariant MemoryInstructionModel::data(const QModelIndex &index, int role) const
             return QString("0x") + QString("%1").arg(effectiveAddr, 8, 16, QChar('0')).toUpper();
     }
 
+    if (customRole == MemInstrRole::CurrentPcRole)
+    {
+        return (effectiveAddr == m_currentPc);
+    }
+
     if (customRole == MemInstrRole::BreakPointRole)
     {
         if (col == MemInstrColumn::Breakpoint)
@@ -74,7 +79,7 @@ QVariant MemoryInstructionModel::data(const QModelIndex &index, int role) const
     {
         if (customRole == MemInstrRole::DisassembledInstrRole || role == Qt::DisplayRole)
         {
-            uint8_t buffer[4] = {0};
+            uint8_t buffer[8] = {0};
 
             if (m_device.peekBlock(effectiveAddr, buffer, m_wordWidth) != Core::BusStatus::Ok)
             {
@@ -91,17 +96,17 @@ QVariant MemoryInstructionModel::data(const QModelIndex &index, int role) const
             if (m_wordWidth == 2)
             {
                 rawInstr = Core::Endian::read16(buffer, currentEndian);
-                replaceIllegalTokensWithBytes(instr, static_cast<uint32_t>(rawInstr));
+                replaceIllegalTokensWithBytes(instr, rawInstr);
             }
             else if (m_wordWidth == 4)
             {
                 rawInstr = Core::Endian::read32(buffer, currentEndian);
-                replaceIllegalTokensWithBytes(instr, static_cast<uint32_t>(rawInstr));
+                replaceIllegalTokensWithBytes(instr, rawInstr);
             }
             else if (m_wordWidth == 8)
             {
                 rawInstr = Core::Endian::read64(buffer, currentEndian);
-                replaceIllegalTokensWithBytes(instr, static_cast<uint32_t>(rawInstr));
+                replaceIllegalTokensWithBytes(instr, rawInstr);
             }
 
             if (customRole == MemInstrRole::DisassembledInstrRole)
@@ -126,14 +131,45 @@ void MemoryInstructionModel::replaceIllegalTokensWithBytes(
     if (!instr.isIllegal)
         return;
 
-    QString rawString = QString("0x") + QString("%1")
-                    .arg(rawBytes, 8, 16, QChar('0')).toUpper();
+    int hexDigits = m_wordWidth * 2;
+    QString rawString = QString("0x") +
+                        QString("%1").arg(rawBytes, hexDigits, 16, QChar('0'))
+                                     .toUpper();
 
     instr.tokens.clear();
     Core::DisasmToken token;
     token.type = Core::TokenType::Incorrect;
     token.text = rawString.toLatin1();
     instr.tokens.push_back(token);
+}
+
+void MemoryInstructionModel::setCurrentPc(uint64_t pc)
+{
+    if (m_currentPc == pc)
+        return;
+
+    int oldRow = getRowByAddress(m_currentPc);
+    m_currentPc = pc;
+
+    int newRow = getRowByAddress(m_currentPc);
+
+    if (oldRow >= 0)
+        emit dataChanged(index(oldRow, 0), index(oldRow, columnCount() - 1));
+
+    if (newRow >= 0)
+        emit dataChanged(index(newRow, 0), index(newRow, columnCount() - 1));
+}
+
+int MemoryInstructionModel::getRowByAddress(uint64_t address) const
+{
+    if (m_blockSize == 0 || m_wordWidth == 0)
+        return -1;
+
+    if (address >= m_blockBaseAddress && address < (m_blockBaseAddress + m_blockSize))
+    {
+        return (address - m_blockBaseAddress) / m_wordWidth;
+    }
+    return -1;
 }
 
 } // namespace Gui
