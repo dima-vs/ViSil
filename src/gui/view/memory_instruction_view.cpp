@@ -58,6 +58,15 @@ void MemoryInstructionView::handleClick(const QModelIndex &index)
     emit breakpointToggled(addr, index);
 }
 
+void MemoryInstructionView::scrollToRow(int row)
+{
+    if (model() && row >= 0 && row < model()->rowCount())
+    {
+        QModelIndex idx = model()->index(row, 0);
+        scrollTo(idx, QAbstractItemView::PositionAtCenter);
+    }
+}
+
 MemoryInstructionView::~MemoryInstructionView() {}
 
 

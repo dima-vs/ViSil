@@ -14,10 +14,12 @@ class MemoryInstructionView : public QTableView
 public:
     MemoryInstructionView(QWidget *parent = nullptr);
 
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void scrollToRow(int row);
     void setModel(QAbstractItemModel *model) override;
 
     ~MemoryInstructionView();
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 signals:
     void breakpointToggled(uint64_t addr, const QModelIndex &index);
 private slots:
