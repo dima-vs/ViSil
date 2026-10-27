@@ -12,6 +12,8 @@ qt_add_executable(ViSil_GUI
 add_subdirectory(common)
 add_subdirectory(model)
 add_subdirectory(view)
+add_subdirectory(app_context)
+add_subdirectory(controller)
 
 set_target_properties(ViSil_GUI PROPERTIES
     AUTOMOC ON
@@ -21,5 +23,7 @@ target_link_libraries(ViSil_GUI
     PRIVATE
         Gui_View_Lib
         Gui_Model_Lib
+        Gui_AppContext_Lib
+        Gui_Controller_Lib
         Arch_RV32_Lib
 )
