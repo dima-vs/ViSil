@@ -1,68 +1,93 @@
+// qt
 #include <QApplication>
-#include <QHeaderView>
-#include <QDebug>
 
+// core
+#include "ram.h"
+#include "cpu.h"
+#include "register_file.h"
+#include "simulation_runner.h"
+#include "execution_env_interface.h"
+#include "rv32_disassembler.h"
+
+// models
+#include "app_models.h"
+#include "register_file_model.h"
+#include "memory_instruction_model.h"
+#include "memory_word_model.h"
+#include "memory_block_model.h"
+
+// views
+#include "theme_manager.h"
 #include "mainwindow.h"
 
-#include "theme_manager.h"
-#include "memory_block_model.h"
-#include "memory_block_view.h"
-#include "ram.h"
-#include "common.h"
+// controllers
+#include "execution_flow_controller.h"
+#include "file_controller.h"
 
-#include "memory_word_model.h"
-#include "memory_word_view.h"
+class MockEnvironment : public Core::IExecutionEnvironment
+{
+public:
+    bool handleEnvCall(Core::ICpu& cpu) override { return false; }
+};
 
+Q_DECLARE_METATYPE(Core::DisassembledInstr);
+Q_DECLARE_METATYPE(Core::ExecutionStatus);
+Q_DECLARE_METATYPE(Core::StopReason);
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Q_INIT_RESOURCE(resources);
+    qRegisterMetaType<Core::ExecutionStatus>();
+    qRegisterMetaType<Core::StopReason>();
 
-    // MainWindow mainWindow;
-    // mainWindow.show();
-
+    // resources and theme
+    Q_INIT_RESOURCE(resources_styles);
+    Q_INIT_RESOURCE(resources_icons);
     Gui::ThemeManager::instance().setTheme(Gui::ThemeManager::ThemeType::Dark);
 
-    // Devices::Ram ram(1000, 256);
-    // Gui::MemoryBlockModel model(ram);
-    // Gui::MemoryBlockView view;
+    // init backend
+    Devices::Ram ram(1, 64 * 1024, Devices::RamUninitBehavior::ZeroFill, Core::Endianness::Little);
+    RV32::RegisterFile regFile;
+    RV32::Cpu cpu(regFile, ram);
 
-    // view.setModel(&model);
-    // QObject::connect(&view, &Gui::MemoryBlockView::columnsChanged,
-    //                  &model, &Gui::MemoryBlockModel::setGridColumns);
+    MockEnvironment mockEnv;
+    Core::SimulationRunner simRunner(mockEnv, cpu);
+    RV32::RV32Disassembler rv32Disasm;
 
-    // view.show();
+    // init models
+    Gui::RegisterFileModel regModel(cpu);
 
+    Gui::MemoryInstructionModel instrModel(simRunner, ram, rv32Disasm);
 
-    Devices::Ram ram(
-        1000, 256,
-        Devices::RamUninitBehavior::ZeroFill,
-        Core::Endianness::Little
-        );
+    instrModel.inspectBlock(0x00000000, ram.getSize());
 
-    ram.write32(0, 0x12345678);
-    ram.write32(4, 0xABCDEF11);
-    ram.write32(8, 0xABCDEF11);
-    ram.write32(16, 0xABCDEF22);
-    ram.write32(20, 0xABCDEF33);
-    ram.write32(24, 0xFBCDEF44);
+    Gui::MemoryWordModel wordModel(ram);
+    wordModel.setAddressWidth(Core::BitWidth::Bits32);
+    wordModel.setDisplayWordWidth(Core::BitWidth::Bits32);
+    wordModel.inspectBlock(0x00000000, ram.getSize());
 
-    Gui::MemoryWordModel model(ram);
-    model.setAddressWidth(Core::BitWidth::Bits32);
-    model.setDisplayWordWidth(Core::BitWidth::Bits32);
-    model.inspectBlock(0, 64);
+    Gui::MemoryBlockModel blockModel(ram);
 
-    Gui::MemoryWordView view;
+    Gui::AppModels appModels {
+        regModel,
+        instrModel,
+        wordModel,
+        blockModel
+    };
 
-    view.setModel(&model);
-    QObject::connect(
-        view.horizontalHeader(), &QHeaderView::sectionClicked,
-        &model, &Gui::MemoryWordModel::onHeaderSectionClicked
-        );
+    // init views
+    Gui::MainWindow mainWindow;
 
-    view.show();
+    mainWindow.setRegisterModel(&regModel);
+    mainWindow.setInstructionModel(&instrModel);
+    mainWindow.setMemoryWordModel(&wordModel);
+
+    // init controllers
+    Gui::ExecutionFlowController execController(cpu, simRunner, appModels, mainWindow);
+    Gui::FileController fileController(appModels, mainWindow, ram);
+
+    mainWindow.show();
 
     return a.exec();
 }
