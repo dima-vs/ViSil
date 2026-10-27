@@ -18,78 +18,109 @@ void MemoryInstructionDelegate::paint(
     ) const
 {
     painter->save();
-    painter->setRenderHint(QPainter::Antialiasing);
 
     using TM = ThemeManager;
     const TM& theme = TM::instance();
-
-    bool isSelected = option.state & QStyle::State_Selected;
-    QColor bgColor;
 
     int col = index.column();
     bool isSideColumn = (col == static_cast<int>(MemInstrColumn::Breakpoint) ||
                          col == static_cast<int>(MemInstrColumn::Address));
 
+    bool isCurrentPc = index.data(static_cast<int>(MemInstrRole::CurrentPcRole)).toBool();
+    QColor bgColor = resolveBackgroundColor(option, isSideColumn, isCurrentPc);
+
+    QRectF fillRect = option.rect;
     if (isSideColumn)
     {
-        bgColor = theme.getColor(TM::GuiElementColor::MemInstr_SidePanelCellBackground);
+        fillRect = fillRect.adjusted(0, -1, 0, 1);
     }
-    else
-    {
-        if (isSelected)
-            bgColor = theme.getColor(TM::GuiElementColor::MemInstr_SelectedCellBackground);
-        else
-            bgColor = theme.getColor(TM::GuiElementColor::MemInstr_InstrCellBackground);
-    }
-
-    // expand rect to prevent rendering gaps between adjacent cells
-    painter->fillRect(option.rect.adjusted(-1, 0, 1, 1), bgColor);
+    painter->fillRect(fillRect, bgColor);
 
     // vertical separator between address and code space
-    if (index.column() == static_cast<int>(MemInstrColumn::Address))
+    if (col == static_cast<int>(MemInstrColumn::Address))
     {
         QColor separatorColor = theme.getColor(TM::GuiElementColor::MemInstr_AddrCodeSeparator);
-        painter->setPen(QPen(separatorColor, 1));
-        painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+        QRectF separatorRect(option.rect.right(), fillRect.top(), 1, fillRect.height());
+
+        painter->fillRect(separatorRect, separatorColor);
     }
+
+    painter->setRenderHint(QPainter::Antialiasing);
 
     drawCellText(painter, option.rect, index);
 
     // draw breakpoint
-    if (index.column() == static_cast<int>(MemInstrColumn::Breakpoint))
+    if (col == static_cast<int>(MemInstrColumn::Breakpoint))
     {
-        bool isBreakPoint = index.data(static_cast<int>(MemInstrRole::BreakPointRole)).toBool();
-        QRectF rect = option.rect;
-
-        double squareSide = std::min(rect.width(), rect.height());
-        QRectF square(0, 0, squareSide, squareSide);
-        square.moveCenter(rect.center());
-        int adjustment = 7;
-        square.adjust(adjustment, adjustment, -adjustment, -adjustment);
-
-        if (isBreakPoint)
-        {
-            QColor breakPointColor = theme.getColor(
-                TM::GuiElementColor::MemInstr_BreakPoint
-                );
-
-            painter->setBrush(QBrush(breakPointColor));
-            painter->setPen(Qt::NoPen);
-            painter->drawEllipse(square);
-        }
-        else if (option.state & QStyle::State_MouseOver)
-        {
-            QColor breakPointHoverColor = theme.getColor(
-                TM::GuiElementColor::MemInstr_BreakPointHover
-                );
-
-            painter->setBrush(QBrush(breakPointHoverColor));
-            painter->setPen(Qt::NoPen);
-            painter->drawEllipse(square);
-        }
+        drawBreakpointOrArrow(painter, option, index, isCurrentPc);
     }
 
     painter->restore();
+}
+
+QColor MemoryInstructionDelegate::resolveBackgroundColor(
+    const QStyleOptionViewItem &option,
+    bool isSideColumn,
+    bool isCurrentPc
+    ) const
+{
+    const auto& theme = ThemeManager::instance();
+
+    if (isCurrentPc && !isSideColumn)
+    {
+        return theme.getColor(ThemeManager::GuiElementColor::MemInstr_CurrentPcCellBackground);
+    }
+
+    if (isSideColumn)
+    {
+        return theme.getColor(ThemeManager::GuiElementColor::MemInstr_SidePanelCellBackground);
+    }
+
+    if (option.state & QStyle::State_Selected)
+    {
+        return theme.getColor(ThemeManager::GuiElementColor::MemInstr_SelectedCellBackground);
+    }
+
+    return theme.getColor(ThemeManager::GuiElementColor::MemInstr_InstrCellBackground);
+}
+
+void MemoryInstructionDelegate::drawBreakpointOrArrow(
+    QPainter *painter,
+    const QStyleOptionViewItem &option,
+    const QModelIndex &index,
+    bool isCurrentPc
+    ) const
+{
+    QRectF rect = option.rect;
+    double squareSide = std::min(rect.width(), rect.height());
+    QRectF square(0, 0, squareSide, squareSide);
+    square.moveCenter(rect.center());
+
+    if (isCurrentPc)
+    {
+        constexpr int arrowAdjustment = 2;
+        square.adjust(arrowAdjustment, arrowAdjustment, -arrowAdjustment, -arrowAdjustment);
+
+        m_arrowIcon.paint(painter, square.toRect(), Qt::AlignCenter);
+        return;
+    }
+
+    bool isBreakPoint = index.data(static_cast<int>(MemInstrRole::BreakPointRole)).toBool();
+    bool isHovered = option.state & QStyle::State_MouseOver;
+
+    if (isBreakPoint || isHovered)
+    {
+        constexpr int bpAdjustment = 7;
+        square.adjust(bpAdjustment, bpAdjustment, -bpAdjustment, -bpAdjustment);
+
+        auto elColor = isBreakPoint ? ThemeManager::GuiElementColor::MemInstr_BreakPoint
+                                    : ThemeManager::GuiElementColor::MemInstr_BreakPointHover;
+
+        QColor color = ThemeManager::instance().getColor(elColor);
+        painter->setBrush(QBrush(color));
+        painter->setPen(Qt::NoPen);
+        painter->drawEllipse(square);
+    }
 }
 
 void MemoryInstructionDelegate::drawCellText(
@@ -127,14 +158,14 @@ void MemoryInstructionDelegate::drawCellText(
     {
         textRect.adjust(5, 0, 0, 0);
         drawInstructionText(painter, textRect, index);
-    } else
+    }
+    else
     {
         painter->setPen(
             theme.getColor(TM::GuiElementColor::MemInstr_AddressText)
             );
         painter->drawText(textRect, alignment, text);
     }
-
 
     painter->restore();
 }
@@ -152,11 +183,10 @@ void MemoryInstructionDelegate::drawInstructionText(
     QFontMetrics fm(painter->font());
 
     double yPos = rect.top() + (rect.height() / 2.0) + ((fm.ascent() - fm.descent()) / 2.0);
-
     double currentX = rect.left();
-    for (int i = 0; i < instr.tokens.size(); ++i)
+
+    for (const auto& token : instr.tokens)
     {
-        Core::DisasmToken token = instr.tokens[i];
         QColor nextColor = resolveColor(token.type);
         QString tokenStr = QString::fromStdString(token.text);
 
