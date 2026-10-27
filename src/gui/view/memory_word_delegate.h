@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QStyledItemDelegate>
 #include <QStyleOptionViewItem>
 #include <QPainter>
