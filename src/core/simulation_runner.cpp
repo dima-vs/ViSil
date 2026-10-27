@@ -65,9 +65,23 @@ StopReason SimulationRunner::executeStep(ExecutionStatus* outStatus)
     }
 
     uint64_t currentPc = m_cpu.getPc();
-    auto it = m_activeBreakpoints.find(currentPc);
-    if (it != m_activeBreakpoints.end())
-        return StopReason::BreakpointHit;
+
+    if (m_parkedOnBreakpoint && m_parkedPc == currentPc)
+    {
+        // do nothing
+    }
+    else
+    {
+        auto it = m_activeBreakpoints.find(currentPc);
+        if (it != m_activeBreakpoints.end())
+        {
+            m_parkedOnBreakpoint = true;
+            m_parkedPc = currentPc;
+            return StopReason::BreakpointHit;
+        }
+    }
+
+    m_parkedOnBreakpoint = false;
 
     ExecutionStatus status = m_cpu.step();
     if (outStatus) *outStatus = status;

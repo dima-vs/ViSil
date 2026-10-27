@@ -27,6 +27,9 @@ private:
     mutable std::mutex m_breakpointMutex;
     OnStoppedCallback m_onStopped;
 
+    bool m_parkedOnBreakpoint = false;
+    uint64_t m_parkedPc = 0;
+
     StopReason executeStep(ExecutionStatus* outStatus = nullptr);
 public:
     SimulationRunner(IExecutionEnvironment &execEnv,ICpu &cpu);
