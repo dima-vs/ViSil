@@ -37,7 +37,7 @@ void RegisterFileDelegate::paint(
     QColor baseBgColor = theme.getColor(TM::GuiElementColor::RegFile_CellBackground);
 
     // for PC set another color
-    if (index.row() == 0 && !isSelected)
+    if (index.row() == 0)
     {
         baseBgColor = theme.getColor(TM::GuiElementColor::RegFile_PcBackground);
     }
