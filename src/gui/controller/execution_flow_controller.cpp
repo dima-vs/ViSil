@@ -49,6 +49,8 @@ void ExecutionFlowController::onDbgRunClicked()
     m_cpu.reset();
     m_appModels.refreshCpu();
 
+    m_simRunner.parkAtCurrentPc();
+
     SimulationThread* simThread = new SimulationThread(m_simRunner, this);
     simThread->setMode(SimulationThread::RunningMode::RunLoop);
     connect(simThread, &SimulationThread::resultReady,
@@ -65,6 +67,8 @@ void ExecutionFlowController::onDbgPauseResumeClicked()
 
 void ExecutionFlowController::onDbgStepIntoClicked()
 {
+    m_simRunner.parkAtCurrentPc();
+
     SimulationThread* simThread = new SimulationThread(m_simRunner, this);
     simThread->setMode(SimulationThread::RunningMode::StepOnce);
     connect(simThread, &SimulationThread::resultReady,
