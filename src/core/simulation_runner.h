@@ -34,6 +34,7 @@ private:
 public:
     SimulationRunner(IExecutionEnvironment &execEnv,ICpu &cpu);
 
+    void parkAtCurrentPc();
     void addBreakpoint(uint64_t addr);
     void removeBreakpoint(uint64_t addr);
     void clearBreakpoints();

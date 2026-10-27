@@ -105,6 +105,12 @@ StopReason SimulationRunner::executeStep(ExecutionStatus* outStatus)
     return StopReason::StepCompleted;
 }
 
+void SimulationRunner::parkAtCurrentPc()
+{
+    m_parkedOnBreakpoint = true;
+    m_parkedPc = m_cpu.getPc();
+}
+
 void SimulationRunner::addBreakpoint(uint64_t addr)
 {
     std::lock_guard<std::mutex> lock(m_breakpointMutex);
