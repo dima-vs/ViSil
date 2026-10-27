@@ -58,6 +58,7 @@ public:
 
         // Memory Instruction View
         MemInstr_InstrCellBackground,
+        MemInstr_CurrentPcCellBackground,
         MemInstr_SelectedCellBackground,
         MemInstr_SidePanelCellBackground,
         MemInstr_AddrCodeSeparator,
