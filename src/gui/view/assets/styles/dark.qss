@@ -1,47 +1,168 @@
+QMainWindow {
+    background-color: #0D0F14;
+}
+
+QSplitter::handle {
+    background-color: #232838;
+}
+
+QSplitter::handle:horizontal {
+    width: 2px;
+}
+
+QSplitter::handle:vertical {
+    height: 2px;
+}
+
+QSplitter::handle:hover {
+    background-color: #38BDF8;
+}
+
 QTableView {
-    background-color: #1e1e1e;
-    border: 1px solid #2d2d2d;
+    background-color: #13161F;
+    border: 1px solid #232838;
+    qproperty-showGrid: false;
+    outline: none;
+}
+
+QTableView::item:hover {
+    background-color: #1A1E2B;
+    color: #E2E8F0;
+}
+
+QTableView::item:selected {
+    background-color: #1E283D;
+    color: #FFFFFF;
+}
+
+QHeaderView {
+    background-color: #0D0F14;
+    border: none;
+}
+
+QHeaderView::section {
+    background-color: #0D0F14;
+    color: #8C8C9A;
+    padding: 2px 4px;
+    border: none;
+    border-bottom: 2px solid #232838;
+    font-weight: 600;
+}
+
+QTabWidget::pane {
+    border: none;
+    border-top: 1px solid #232838;
+    background-color: #13161F;
+}
+
+QTabBar::tab {
+    background-color: #0D0F14;
+    color: #8A91A8;
+    padding: 8px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: "Segoe UI", "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+QTabBar::tab:hover {
+    color: #E2E8F0;
+    background-color: #1A1E2B;
+}
+
+QTabBar::tab:selected {
+    color: #E2E8F0;
+    background-color: #13161F;
+    border-bottom: 2px solid #38BDF8;
+}
+
+QMenuBar {
+    background-color: #0D0F14;
+    color: #8A91A8;
+    border: none;
+    font-family: "Segoe UI", "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+QMenuBar::item {
+    background: transparent;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 2px;
+}
+
+QMenuBar::item:selected {
+    background-color: #1A1E2B;
+    color: #E2E8F0;
+}
+
+QMenu {
+    background-color: #13161F;
+    color: #E2E8F0;
+    border: 1px solid #232838;
+    border-radius: 6px;
+    padding: 4px 0px;
+    font-family: "Segoe UI", "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+QMenu::item {
+    padding: 6px 20px 6px 12px;
+    background-color: transparent;
+    border: none;
+    margin: 1px 4px;
+    border-radius: 4px;
+}
+
+QMenu::item:selected {
+    background-color: #1E283D;
+    color: #FFFFFF;
+}
+
+QMenu::separator {
+    height: 1px;
+    background-color: #232838;
+    margin: 4px 6px;
+}
+
+QMenu::shortcut {
+    color: #555D73;
+    padding-left: 16px;
 }
 
 QToolTip {
-    background-color: #252936;
-    color: #e3e6ed;
-
-    border: 1px solid #3d4457;
+    background-color: #1A1E2B;
+    color: #E2E8F0;
+    border: 1px solid #232838;
     border-radius: 4px;
-
-    padding: 3px 6px;
-
+    padding: 4px 8px;
     font-family: "Segoe UI", sans-serif;
     font-size: 11px;
     font-weight: 600;
 }
 
-
 QScrollBar:vertical {
-    background: #1e1e1e;
-    width: 14px;
+    background: #0D0F14;
+    width: 12px;
     margin: 0px;
 }
 
 QScrollBar::handle:vertical {
-    background: #3e3e42;
-    min-height: 30px;
-
-    border: 6px solid #1e1e1e;
-    border-radius: 2px;
+    background: #232838;
+    min-height: 28px;
+    border: 3px solid #0D0F14;
+    border-radius: 6px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #505055;
-    border: 5px solid #1e1e1e;
-    border-radius: 7px;
+    background: #3B4259;
 }
 
 QScrollBar::handle:vertical:pressed {
-    background: #68686d;
-    border: 5px solid #1e1e1e;
-    border-radius: 7px;
+    background: #4E5775;
 }
 
 QScrollBar::add-line:vertical,
@@ -56,23 +177,21 @@ QScrollBar::sub-page:vertical {
     background: none;
 }
 
-
 QWidget#DebuggerPanel {
-    background-color: #14171D;
-    border-bottom: 2px solid #2D313E;
+    background-color: #0D0F14;
+    border-bottom: 1px solid #232838;
 }
 
 QWidget#DebuggerPanel QPushButton {
     background: transparent;
     border: 1px solid transparent;
-    border-radius: 0px;
-    padding: 4px;
+    border-radius: 4px;
+    padding: 4px 6px;
 }
 
 QWidget#DebuggerPanel QPushButton:pressed {
     padding-top: 5px;
-    padding-left: 5px;
-
+    padding-left: 7px;
 }
 
 QWidget#DebuggerPanel QPushButton:disabled {
@@ -85,7 +204,7 @@ QPushButton#runBtn:hover {
 }
 
 QPushButton#runBtn:pressed {
-    background-color: rgba(82, 229, 98, 0.35);
+    background-color: rgba(82, 229, 98, 0.28);
     border: 1px solid #3ca848;
 }
 
@@ -93,8 +212,9 @@ QPushButton#pauseBtn:hover {
     background-color: rgba(56, 189, 248, 0.12);
     border: 1px solid #38BDF8;
 }
+
 QPushButton#pauseBtn:pressed {
-    background-color: rgba(56, 189, 248, 0.35);
+    background-color: rgba(56, 189, 248, 0.28);
     border: 1px solid #228cb8;
 }
 
@@ -104,6 +224,6 @@ QPushButton#stepIntoBtn:hover {
 }
 
 QPushButton#stepIntoBtn:pressed {
-    background-color: rgba(220, 225, 92, 0.35);
+    background-color: rgba(220, 225, 92, 0.28);
     border: 1px solid #a6a943;
 }
