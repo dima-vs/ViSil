@@ -1,7 +1,9 @@
 #include "memory_instruction_view.h"
-#include "memory_instruction_delegate.h"
 #include "memory_instruction_types.h"
 #include <QHeaderView>
+
+#include <QScrollBar>
+#include <cmath>
 
 namespace Gui
 {
@@ -10,7 +12,8 @@ MemoryInstructionView::MemoryInstructionView(QWidget *parent) :
     QTableView(parent)
 {
     setMouseTracking(true);
-    setItemDelegate(new MemoryInstructionDelegate(this));
+    m_delegate = new MemoryInstructionDelegate(this);
+    setItemDelegate(m_delegate);
 
     verticalHeader()->hide();
     horizontalHeader()->hide();
@@ -24,6 +27,14 @@ MemoryInstructionView::MemoryInstructionView(QWidget *parent) :
 
     connect(this, &QTableView::clicked,
             this, &MemoryInstructionView::handleClick);
+
+    m_errorCard = new InlineErrorCard(this->viewport());
+
+    connect(verticalScrollBar(), &QScrollBar::valueChanged,
+            this, &MemoryInstructionView::updateOverlayPositions);
+
+    connect(horizontalScrollBar(), &QScrollBar::valueChanged,
+            this, &MemoryInstructionView::updateOverlayPositions);
 }
 
 void MemoryInstructionView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -65,6 +76,59 @@ void MemoryInstructionView::scrollToRow(int row)
         QModelIndex idx = model()->index(row, 0);
         scrollTo(idx, QAbstractItemView::PositionAtCenter);
     }
+}
+
+void MemoryInstructionView::resizeEvent(QResizeEvent *event)
+{
+    QTableView::resizeEvent(event);
+    updateOverlayPositions();
+}
+
+void MemoryInstructionView::showErrorAtRow(int row, const QString& message)
+{
+    if (row < 0) return;
+
+    m_errorRow = row;
+    m_errorCard->setError(message);
+
+    updateOverlayPositions();
+}
+
+void MemoryInstructionView::hideError()
+{
+    m_errorRow = -1;
+    m_errorCard->hide();
+}
+
+void MemoryInstructionView::updateOverlayPositions()
+{
+    if (m_errorRow < 0 || !model())
+    {
+        m_errorCard->hide();
+        return;
+    }
+
+    QModelIndex idx = model()->index(m_errorRow, static_cast<int>(MemInstrColumn::Disassembly));
+    QRectF cellRect = visualRect(idx);
+
+    if (!cellRect.isValid() || cellRect.isEmpty() ||
+        cellRect.bottom() < 0 || cellRect.top() > viewport()->height())
+    {
+        m_errorCard->hide();
+        return;
+    }
+
+    int tokenWidth = m_delegate->getInstrTokenWidth(idx);
+    double cardX = cellRect.left() + tokenWidth;
+
+    QRectF cardRect = m_errorCard->geometry();
+    cardRect.moveCenter(QPointF(cardX + m_errorCard->width() / 2.0, cellRect.center().y()));
+
+    cardRect.adjust(10, 0, 0, 0);
+    m_errorCard->move(std::round(cardRect.left()), std::round(cardRect.top()));
+
+    m_errorCard->raise();
+    m_errorCard->show();
 }
 
 MemoryInstructionView::~MemoryInstructionView() {}
