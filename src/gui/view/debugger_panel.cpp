@@ -64,20 +64,38 @@ void DebuggerPanel::initButtonAppearance()
     m_stepIntoBtn->setToolTip("Step into");
 }
 
-void DebuggerPanel::handlePauseResumeClicked()
+void DebuggerPanel::setRunEnabled(bool enabled)
 {
-    m_isPaused = !m_isPaused;
+    m_runBtn->setEnabled(enabled);
+}
 
-    if (m_isPaused)
-    {
-        m_pauseResumeBtn->setIcon(m_resumeIcon);
-        m_pauseResumeBtn->setToolTip("Resume");
-    } else
+void DebuggerPanel::setStepIntoEnabled(bool enabled)
+{
+    m_stepIntoBtn->setEnabled(enabled);
+}
+
+void DebuggerPanel::setPauseResumeEnabled(bool enabled)
+{
+    m_pauseResumeBtn->setEnabled(enabled);
+}
+
+void DebuggerPanel::setPauseResumeMode(PauseResumeMode mode)
+{
+    m_currentMode = mode;
+    if (mode == PauseResumeMode::Pause)
     {
         m_pauseResumeBtn->setIcon(m_pauseIcon);
         m_pauseResumeBtn->setToolTip("Pause");
     }
+    else
+    {
+        m_pauseResumeBtn->setIcon(m_resumeIcon);
+        m_pauseResumeBtn->setToolTip("Resume");
+    }
+}
 
+void DebuggerPanel::handlePauseResumeClicked()
+{
     emit pauseResumeClicked();
 }
 
