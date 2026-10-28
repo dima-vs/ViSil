@@ -51,11 +51,15 @@ public:
         );
 
     void changeState(State newState);
+signals:
+    void stateChanged(State newState);
 private slots:
     void onDbgRunClicked();
     void onDbgPauseResumeClicked();
     void onDbgStepIntoClicked();
     void handleResults(Core::ExecutionStatus status, Core::StopReason reason);
+
+    void hideErrorCard(State newState);
 public slots:
     void onFileLoaded();
 };

@@ -20,6 +20,7 @@ target_link_libraries(Gui_Controller_Lib
         Gui_Model_Lib
         Core_Lib
         Devices_Lib
+        Gui_Utils_Lib
 )
 
 target_include_directories(Gui_Controller_Lib PUBLIC

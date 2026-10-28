@@ -1,5 +1,6 @@
 #include "execution_flow_controller.h"
 #include "simulation_thread.h"
+#include "status_formatter.h"
 
 namespace Gui
 {
@@ -42,6 +43,9 @@ ExecutionFlowController::ExecutionFlowController(
 
     connect(&m_mainWindow, &MainWindow::regFormatCycled,
             &m_appModels.registers, &RegisterFileModel::cycleFormat);
+
+    connect(this, &ExecutionFlowController::stateChanged,
+            this, &ExecutionFlowController::hideErrorCard);
 }
 
 void ExecutionFlowController::onDbgRunClicked()
@@ -70,7 +74,7 @@ void ExecutionFlowController::onDbgRunClicked()
 
 void ExecutionFlowController::onDbgPauseResumeClicked()
 {
-    if (m_currentState == State::RunningLoop)
+    if (isRunningState())
     {
         m_simRunner.requestStop();
     }
@@ -113,7 +117,13 @@ void ExecutionFlowController::handleResults(Core::ExecutionStatus status, Core::
     if (targetRow >= 0)
         m_mainWindow.scrollToInstructionRow(targetRow);
 
-    if (reason == Core::StopReason::StepCompleted ||
+    if (reason == Core::StopReason::CpuError)
+    {
+        QString errorMsg = StatusFormatter::formatStatus(status).second;
+        m_mainWindow.showInstructionError(targetRow, errorMsg);
+        changeState(State::Finished);
+    }
+    else if (reason == Core::StopReason::StepCompleted ||
         reason == Core::StopReason::UserRequested ||
         reason == Core::StopReason::BreakpointHit)
     {
@@ -177,6 +187,8 @@ void ExecutionFlowController::changeState(State newState)
         m_mainWindow.setDebuggerPauseEnabled(false);
         break;
     }
+
+    emit stateChanged(newState);
 }
 
 void ExecutionFlowController::onFileLoaded()
@@ -188,6 +200,12 @@ bool ExecutionFlowController::isRunningState()
 {
     return (m_currentState == State::RunningLoop) ||
            (m_currentState == State::RunningStep);
+}
+
+void ExecutionFlowController::hideErrorCard(State newState)
+{
+    if (newState != State::Finished)
+        m_mainWindow.hideInstructionError();
 }
 
 } // namespace Gui
