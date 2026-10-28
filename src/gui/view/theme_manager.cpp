@@ -99,6 +99,11 @@ void ThemeManager::setTheme(ThemeType theme)
         m_colors[GuiElementColor::MemInstr_AsmTokenPunctuation] = QColor("#64748B");
         m_colors[GuiElementColor::MemInstr_AsmTokenIncorrect] = QColor("#8A91A8");
         m_colors[GuiElementColor::MemInstr_AsmTokenDefault] = QColor("#E2E8F0");
+
+        // Inline Error Card
+        m_colors[GuiElementColor::ErrorCard_Background] = QColor("#250B0B");
+        m_colors[GuiElementColor::ErrorCard_Border] = QColor("#FF5252");
+        m_colors[GuiElementColor::ErrorCard_DropShadowEffect] = QColor("#8C000000");
     }
 
     loadQssForTheme(theme);

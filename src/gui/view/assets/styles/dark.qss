@@ -227,3 +227,14 @@ QPushButton#stepIntoBtn:pressed {
     background-color: rgba(220, 225, 92, 0.28);
     border: 1px solid #a6a943;
 }
+
+QWidget#InlineErrorCard QLabel#ErrorIconLabel {
+    font-size: 14px;
+}
+
+QWidget#InlineErrorCard QLabel#ErrorMessageLabel {
+    color: #E3E6ED;
+    font-family: "Segoe UI", "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}

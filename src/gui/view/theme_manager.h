@@ -71,7 +71,12 @@ public:
         MemInstr_AsmTokenImmediate,
         MemInstr_AsmTokenPunctuation,
         MemInstr_AsmTokenIncorrect,
-        MemInstr_AsmTokenDefault
+        MemInstr_AsmTokenDefault,
+
+        // Inline Error Card
+        ErrorCard_Background,
+        ErrorCard_Border,
+        ErrorCard_DropShadowEffect
     };
 
 private:
