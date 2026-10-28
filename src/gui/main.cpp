@@ -87,6 +87,10 @@ int main(int argc, char *argv[])
     Gui::ExecutionFlowController execController(cpu, simRunner, appModels, mainWindow);
     Gui::FileController fileController(appModels, mainWindow, ram);
 
+    execController.changeState(Gui::ExecutionFlowController::State::Unloaded);
+    QObject::connect(&fileController, &Gui::FileController::fileLoaded,
+        &execController, &Gui::ExecutionFlowController::onFileLoaded);
+
     mainWindow.show();
 
     return a.exec();
