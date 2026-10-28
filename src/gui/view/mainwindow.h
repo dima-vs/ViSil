@@ -36,6 +36,11 @@ public:
     void setInstructionModel(QAbstractItemModel *model);
     void setRegisterModel(QAbstractItemModel *model);
     void setMemoryWordModel(QAbstractItemModel *model);
+
+    void setDebuggerRunEnabled(bool enabled);
+    void setDebuggerStepEnabled(bool enabled);
+    void setDebuggerPauseEnabled(bool enabled);
+    void setDebuggerPauseMode(DebuggerPanel::PauseResumeMode mode);
 signals:
     // menu
     void fileSelected(const QString& fileName);

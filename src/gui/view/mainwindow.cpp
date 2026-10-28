@@ -126,6 +126,26 @@ void MainWindow::setMemoryWordModel(QAbstractItemModel *model)
     m_memoryWordView->setModel(model);
 }
 
+void MainWindow::setDebuggerRunEnabled(bool enabled)
+{
+    m_debuggerPanel->setRunEnabled(enabled);
+}
+
+void MainWindow::setDebuggerStepEnabled(bool enabled)
+{
+    m_debuggerPanel->setStepIntoEnabled(enabled);
+}
+
+void MainWindow::setDebuggerPauseEnabled(bool enabled)
+{
+    m_debuggerPanel->setPauseResumeEnabled(enabled);
+}
+
+void MainWindow::setDebuggerPauseMode(DebuggerPanel::PauseResumeMode mode)
+{
+    m_debuggerPanel->setPauseResumeMode(mode);
+}
+
 MainWindow::~MainWindow() {}
 
 } // namespace Gui
