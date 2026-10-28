@@ -44,6 +44,7 @@ void FileController::onFileSelected(const QString& fileName)
         );
 
     m_appModels.refreshMemory();
+    emit fileLoaded();
 }
 
 } // namespace Gui

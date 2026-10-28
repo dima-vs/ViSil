@@ -25,6 +25,8 @@ public:
         Core::IBusDevice& busDevice,
         QObject* parent = nullptr
         );
+signals:
+    void fileLoaded();
 private slots:
     void onFileSelected(const QString& fileName);
 };
