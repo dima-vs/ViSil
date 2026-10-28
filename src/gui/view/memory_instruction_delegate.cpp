@@ -2,14 +2,18 @@
 #include "memory_instruction_types.h"
 #include "theme_manager.h"
 
-#include <QRectF>
-#include <QFont>
 #include <QFontMetrics>
 #include <QTextOption>
 #include <algorithm>
 
 namespace Gui
 {
+
+MemoryInstructionDelegate::MemoryInstructionDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
+{
+    initFont();
+}
 
 void MemoryInstructionDelegate::paint(
     QPainter *painter,
@@ -134,19 +138,7 @@ void MemoryInstructionDelegate::drawCellText(
         return;
 
     painter->save();
-
-    QFont font;
-    font.setFamilies({
-        "Consolas",
-        "Menlo",
-        "Fira Code",
-        "JetBrains Mono",
-        "DejaVu Sans Mono"
-    });
-    font.setStyleHint(QFont::Monospace);
-    font.setPointSize(11);
-    font.setBold(true);
-    painter->setFont(font);
+    painter->setFont(m_font);
 
     using TM = ThemeManager;
     const TM& theme = TM::instance();
@@ -219,6 +211,32 @@ QColor MemoryInstructionDelegate::resolveColor(const Core::TokenType tokenType) 
     default:
         return theme.getColor(TM::GuiElementColor::MemInstr_AsmTokenDefault);
     }
+}
+
+int MemoryInstructionDelegate::getInstrTokenWidth(const QModelIndex &index) const
+{
+    Core::DisassembledInstr instr = index.data(
+                     static_cast<int>(MemInstrRole::DisassembledInstrRole))
+                .value<Core::DisassembledInstr>();
+
+    QFontMetrics fm(m_font);
+    QString tokenStr = QString::fromStdString(instr.toString());
+
+    return fm.horizontalAdvance(tokenStr);
+}
+
+void MemoryInstructionDelegate::initFont()
+{
+    m_font.setFamilies({
+        "Consolas",
+        "Menlo",
+        "Fira Code",
+        "JetBrains Mono",
+        "DejaVu Sans Mono"
+    });
+    m_font.setStyleHint(QFont::Monospace);
+    m_font.setPointSize(11);
+    m_font.setBold(true);
 }
 
 } // namespace Gui
