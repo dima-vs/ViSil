@@ -41,6 +41,9 @@ public:
     void setDebuggerStepEnabled(bool enabled);
     void setDebuggerPauseEnabled(bool enabled);
     void setDebuggerPauseMode(DebuggerPanel::PauseResumeMode mode);
+
+    void showInstructionError(int row, const QString& message);
+    void hideInstructionError();
 signals:
     // menu
     void fileSelected(const QString& fileName);

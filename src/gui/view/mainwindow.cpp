@@ -146,6 +146,16 @@ void MainWindow::setDebuggerPauseMode(DebuggerPanel::PauseResumeMode mode)
     m_debuggerPanel->setPauseResumeMode(mode);
 }
 
+void MainWindow::showInstructionError(int row, const QString& message)
+{
+    m_instructionView->showErrorAtRow(row, message);
+}
+
+void MainWindow::hideInstructionError()
+{
+    m_instructionView->hideError();
+}
+
 MainWindow::~MainWindow() {}
 
 } // namespace Gui
