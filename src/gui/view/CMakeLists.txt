@@ -23,6 +23,8 @@ set(Gui_View_Sources
     memory_instruction_delegate.cpp
     debugger_panel.h
     debugger_panel.cpp
+    inline_error_card.h
+    inline_error_card.cpp
 
     assets/resources_styles.qrc
     assets/resources_icons.qrc
