@@ -46,10 +46,18 @@ ExecutionFlowController::ExecutionFlowController(
 
 void ExecutionFlowController::onDbgRunClicked()
 {
+    if (isRunningState())
+    {
+        m_pendingAction = PendingAction::Restart;
+        m_simRunner.requestStop();
+        return;
+    }
+
     m_cpu.reset();
     m_appModels.refreshCpu();
-
     m_simRunner.parkAtCurrentPc();
+
+    changeState(State::RunningLoop);
 
     SimulationThread* simThread = new SimulationThread(m_simRunner, this);
     simThread->setMode(SimulationThread::RunningMode::RunLoop);
@@ -62,12 +70,28 @@ void ExecutionFlowController::onDbgRunClicked()
 
 void ExecutionFlowController::onDbgPauseResumeClicked()
 {
-    m_simRunner.requestStop();
+    if (m_currentState == State::RunningLoop)
+    {
+        m_simRunner.requestStop();
+    }
+    else if (m_currentState == State::Paused)
+    {
+        m_simRunner.parkAtCurrentPc();
+        changeState(State::RunningLoop);
+
+        SimulationThread* simThread = new SimulationThread(m_simRunner, this);
+        simThread->setMode(SimulationThread::RunningMode::RunLoop);
+        connect(simThread, &SimulationThread::resultReady, this, &ExecutionFlowController::handleResults);
+        connect(simThread, &SimulationThread::finished, simThread, &QObject::deleteLater);
+        simThread->start();
+    }
 }
 
 void ExecutionFlowController::onDbgStepIntoClicked()
 {
     m_simRunner.parkAtCurrentPc();
+
+    changeState(State::RunningStep);
 
     SimulationThread* simThread = new SimulationThread(m_simRunner, this);
     simThread->setMode(SimulationThread::RunningMode::StepOnce);
@@ -81,17 +105,89 @@ void ExecutionFlowController::onDbgStepIntoClicked()
 void ExecutionFlowController::handleResults(Core::ExecutionStatus status, Core::StopReason reason)
 {
     m_appModels.refreshAll();
-
     uint64_t currentPc = m_cpu.getPc();
 
     m_appModels.instructions.setCurrentPc(currentPc);
-
     int targetRow = m_appModels.instructions.getRowByAddress(currentPc);
 
     if (targetRow >= 0)
-    {
         m_mainWindow.scrollToInstructionRow(targetRow);
+
+    if (reason == Core::StopReason::StepCompleted ||
+        reason == Core::StopReason::UserRequested ||
+        reason == Core::StopReason::BreakpointHit)
+    {
+        changeState(State::Paused);
     }
+    else
+    {
+        changeState(State::Finished);
+    }
+
+    if (m_pendingAction == PendingAction::Restart)
+    {
+        m_pendingAction = PendingAction::None;
+        onDbgRunClicked();
+    }
+}
+
+void ExecutionFlowController::changeState(State newState)
+{
+    m_currentState = newState;
+
+    switch (newState)
+    {
+    case State::Unloaded:
+        m_mainWindow.setDebuggerRunEnabled(false);
+        m_mainWindow.setDebuggerStepEnabled(false);
+        m_mainWindow.setDebuggerPauseEnabled(false);
+        break;
+
+    case State::Ready:
+        m_mainWindow.setDebuggerRunEnabled(true);
+        m_mainWindow.setDebuggerStepEnabled(true);
+        m_mainWindow.setDebuggerPauseEnabled(false);
+        m_mainWindow.setDebuggerPauseMode(DebuggerPanel::PauseResumeMode::Pause);
+        break;
+
+    case State::RunningLoop:
+        m_mainWindow.setDebuggerRunEnabled(true);
+        m_mainWindow.setDebuggerStepEnabled(false);
+        m_mainWindow.setDebuggerPauseEnabled(true);
+        m_mainWindow.setDebuggerPauseMode(DebuggerPanel::PauseResumeMode::Pause);
+        break;
+
+    case State::RunningStep:
+        m_mainWindow.setDebuggerRunEnabled(true);
+        m_mainWindow.setDebuggerStepEnabled(false);
+        m_mainWindow.setDebuggerPauseEnabled(false);
+        m_mainWindow.setDebuggerPauseMode(DebuggerPanel::PauseResumeMode::Resume);
+        break;
+
+    case State::Paused:
+        m_mainWindow.setDebuggerRunEnabled(true);
+        m_mainWindow.setDebuggerStepEnabled(true);
+        m_mainWindow.setDebuggerPauseEnabled(true);
+        m_mainWindow.setDebuggerPauseMode(DebuggerPanel::PauseResumeMode::Resume);
+        break;
+
+    case State::Finished:
+        m_mainWindow.setDebuggerRunEnabled(true);
+        m_mainWindow.setDebuggerStepEnabled(false);
+        m_mainWindow.setDebuggerPauseEnabled(false);
+        break;
+    }
+}
+
+void ExecutionFlowController::onFileLoaded()
+{
+    changeState(State::Ready);
+}
+
+bool ExecutionFlowController::isRunningState()
+{
+    return (m_currentState == State::RunningLoop) ||
+           (m_currentState == State::RunningStep);
 }
 
 } // namespace Gui
