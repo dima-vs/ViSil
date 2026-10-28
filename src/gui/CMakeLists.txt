@@ -10,6 +10,7 @@ qt_add_executable(ViSil_GUI
 )
 
 add_subdirectory(common)
+add_subdirectory(utils)
 add_subdirectory(model)
 add_subdirectory(view)
 add_subdirectory(app_context)
