@@ -33,8 +33,6 @@ public:
     ~SimulationThread();
 protected:
     void run() override;
-signals:
-    void resultReady(Core::ExecutionStatus status, Core::StopReason reason);
 };
 
 } // namespace Gui

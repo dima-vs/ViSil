@@ -46,6 +46,15 @@ ExecutionFlowController::ExecutionFlowController(
 
     connect(this, &ExecutionFlowController::stateChanged,
             this, &ExecutionFlowController::hideErrorCard);
+
+    connect(this, &ExecutionFlowController::simulationResultReady,
+            this, &ExecutionFlowController::handleResults);
+
+    m_simRunner.setOnStoppedCallback(
+        [this](Core::StopReason reason, Core::ExecutionStatus exStatus) {
+            emit this->simulationResultReady(exStatus, reason);
+        }
+    );
 }
 
 void ExecutionFlowController::onDbgRunClicked()
@@ -63,10 +72,8 @@ void ExecutionFlowController::onDbgRunClicked()
 
     changeState(State::RunningLoop);
 
-    SimulationThread* simThread = new SimulationThread(m_simRunner, this);
+    SimulationThread* simThread = new SimulationThread(m_simRunner);
     simThread->setMode(SimulationThread::RunningMode::RunLoop);
-    connect(simThread, &SimulationThread::resultReady,
-            this, &ExecutionFlowController::handleResults);
     connect(simThread, &SimulationThread::finished,
             simThread, &QObject::deleteLater);
     simThread->start();
@@ -83,9 +90,8 @@ void ExecutionFlowController::onDbgPauseResumeClicked()
         m_simRunner.parkAtCurrentPc();
         changeState(State::RunningLoop);
 
-        SimulationThread* simThread = new SimulationThread(m_simRunner, this);
+        SimulationThread* simThread = new SimulationThread(m_simRunner);
         simThread->setMode(SimulationThread::RunningMode::RunLoop);
-        connect(simThread, &SimulationThread::resultReady, this, &ExecutionFlowController::handleResults);
         connect(simThread, &SimulationThread::finished, simThread, &QObject::deleteLater);
         simThread->start();
     }
@@ -97,10 +103,8 @@ void ExecutionFlowController::onDbgStepIntoClicked()
 
     changeState(State::RunningStep);
 
-    SimulationThread* simThread = new SimulationThread(m_simRunner, this);
+    SimulationThread* simThread = new SimulationThread(m_simRunner);
     simThread->setMode(SimulationThread::RunningMode::StepOnce);
-    connect(simThread, &SimulationThread::resultReady,
-            this, &ExecutionFlowController::handleResults);
     connect(simThread, &SimulationThread::finished,
             simThread, &QObject::deleteLater);
     simThread->start();

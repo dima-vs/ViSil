@@ -7,11 +7,7 @@ SimulationThread::SimulationThread(
     Core::SimulationRunner& simRunner,
     QObject* parent
     ) : QThread(parent), m_simRunner(simRunner)
-{
-    m_simRunner.setOnStoppedCallback([this](Core::StopReason reason, Core::ExecutionStatus exStatus){
-        emit this->resultReady(exStatus, reason);
-    });
-}
+{}
 
 void SimulationThread::run()
 {
@@ -31,9 +27,6 @@ void SimulationThread::setMode(RunningMode mode)
     m_currentMode = mode;
 }
 
-SimulationThread::~SimulationThread()
-{
-    m_simRunner.setOnStoppedCallback(nullptr);
-}
+SimulationThread::~SimulationThread() {}
 
 } // namespace Gui

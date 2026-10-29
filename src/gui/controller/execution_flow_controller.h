@@ -53,6 +53,7 @@ public:
     void changeState(State newState);
 signals:
     void stateChanged(State newState);
+    void simulationResultReady(Core::ExecutionStatus status, Core::StopReason reason);
 private slots:
     void onDbgRunClicked();
     void onDbgPauseResumeClicked();
