@@ -8,9 +8,5 @@ set(Devices_Sources
 add_library(Devices_Lib STATIC ${Devices_Sources})
 
 target_link_libraries(Devices_Lib
-    PUBLIC Core_Lib
-)
-
-target_include_directories(Devices_Lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC Core_Lib Visil_Includes
 )

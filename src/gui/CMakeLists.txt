@@ -21,6 +21,7 @@ set_target_properties(ViSil_GUI PROPERTIES
 )
 
 target_link_libraries(ViSil_GUI
+    PUBLIC Visil_Includes
     PRIVATE
         Gui_View_Lib
         Gui_Model_Lib

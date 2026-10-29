@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "core/common.h"
 #include <QString>
 
 namespace Gui

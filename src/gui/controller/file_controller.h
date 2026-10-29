@@ -1,8 +1,8 @@
 #pragma once
 
-#include "bus_device_interface.h"
-#include "mainwindow.h"
-#include "app_models.h"
+#include "core/bus_device_interface.h"
+#include "gui/view/mainwindow.h"
+#include "gui/app_context/app_models.h"
 
 #include <QObject>
 #include <QString>

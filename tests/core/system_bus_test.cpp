@@ -3,8 +3,8 @@
 #include <limits>
 #include <vector>
 
-#include "system_bus.h"
-#include "bus_device_interface.h"
+#include "core/system_bus.h"
+#include "core/bus_device_interface.h"
 
 using namespace Core;
 

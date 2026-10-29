@@ -1,5 +1,5 @@
 #include "memory_word_model.h"
-#include "endian_utils.h"
+#include "core/endian_utils.h"
 #include <QChar>
 #include <QString>
 #include <vector>

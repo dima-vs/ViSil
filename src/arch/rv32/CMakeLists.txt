@@ -16,8 +16,5 @@ add_library(Arch_RV32_Lib STATIC ${RV32_Sources})
 
 target_link_libraries(Arch_RV32_Lib
     PUBLIC Core_Lib
-)
-
-target_include_directories(Arch_RV32_Lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    Visil_Includes
 )

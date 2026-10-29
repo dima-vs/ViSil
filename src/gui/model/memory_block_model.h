@@ -5,7 +5,7 @@
 #include <QModelIndex>
 
 #include <cstdint>
-#include "bus_device_interface.h"
+#include "core/bus_device_interface.h"
 
 namespace Gui
 {

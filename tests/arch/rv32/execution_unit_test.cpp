@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <vector>
-#include "execution_unit.h"
-#include "ram.h"
+#include "arch/rv32/execution_unit.h"
+#include "devices/ram.h"
 
 using namespace RV32;
 using namespace Core;

@@ -6,9 +6,9 @@
 #include <QVariant>
 
 #include <cstdint>
-#include "bus_device_interface.h"
-#include "disassembler_interface.h"
-#include "simulation_runner.h"
+#include "core/bus_device_interface.h"
+#include "core/disassembler_interface.h"
+#include "core/simulation_runner.h"
 
 namespace Gui
 {

@@ -9,7 +9,7 @@
 #include <QRectF>
 #include <cstdint>
 
-#include "disassembler_interface.h"
+#include "core/disassembler_interface.h"
 
 namespace Gui
 {

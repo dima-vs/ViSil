@@ -1,9 +1,9 @@
 #pragma once
 
-#include "memory_block_model.h"
-#include "memory_instruction_model.h"
-#include "memory_word_model.h"
-#include "register_file_model.h"
+#include "gui/model/memory_block_model.h"
+#include "gui/model/memory_instruction_model.h"
+#include "gui/model/memory_word_model.h"
+#include "gui/model/register_file_model.h"
 
 #include <QAbstractItemModel>
 

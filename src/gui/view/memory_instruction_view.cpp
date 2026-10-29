@@ -1,5 +1,5 @@
 #include "memory_instruction_view.h"
-#include "memory_instruction_types.h"
+#include "gui/common/memory_instruction_types.h"
 #include <QHeaderView>
 
 #include <QScrollBar>

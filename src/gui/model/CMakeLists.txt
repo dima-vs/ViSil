@@ -17,12 +17,9 @@ set_target_properties(Gui_Model_Lib PROPERTIES
 
 target_link_libraries(Gui_Model_Lib
    PUBLIC
+   Visil_Includes
    Core_Lib
    Devices_Lib
    Gui_Common_Lib
    Qt${QT_VERSION_MAJOR}::Core
-)
-
-target_include_directories(Gui_Model_Lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
 )

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <cstdint>
-#include "decoder.h"
+#include "arch/rv32/decoder.h"
 
 using namespace RV32;
 

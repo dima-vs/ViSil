@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common.h"
-#include "simulation_runner.h"
+#include "core/common.h"
+#include "core/simulation_runner.h"
 
 #include <QThread>
 #include <QObject>

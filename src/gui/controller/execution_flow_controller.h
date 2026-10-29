@@ -1,10 +1,10 @@
 #pragma once
 
-#include "cpu_interface.h"
-#include "simulation_runner.h"
-#include "common.h"
-#include "app_models.h"
-#include "mainwindow.h"
+#include "core/cpu_interface.h"
+#include "core/simulation_runner.h"
+#include "core/common.h"
+#include "gui/app_context/app_models.h"
+#include "gui/view/mainwindow.h"
 
 #include <QObject>
 

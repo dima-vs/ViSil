@@ -4,7 +4,7 @@
 #include <QFontMetrics>
 
 #include "register_file_delegate.h"
-#include "register_file_types.h"
+#include "gui/common/register_file_types.h"
 #include "theme_manager.h"
 
 namespace Gui

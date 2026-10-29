@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cpu_interface.h"
+#include "core/cpu_interface.h"
 
 namespace Core
 {

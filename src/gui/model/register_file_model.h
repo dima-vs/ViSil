@@ -7,8 +7,8 @@
 
 #include <QList>
 #include <cstdint>
-#include "cpu_interface.h"
-#include "register_file_types.h"
+#include "core/cpu_interface.h"
+#include "gui/common/register_file_types.h"
 
 namespace Gui
 {

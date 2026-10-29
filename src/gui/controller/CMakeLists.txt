@@ -14,15 +14,11 @@ set_target_properties(Gui_Controller_Lib PROPERTIES
 )
 
 target_link_libraries(Gui_Controller_Lib
-    PUBLIC
+    PUBLIC Visil_Includes
         Gui_View_Lib
         Gui_AppContext_Lib
         Gui_Model_Lib
         Core_Lib
         Devices_Lib
         Gui_Utils_Lib
-)
-
-target_include_directories(Gui_Controller_Lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
 )

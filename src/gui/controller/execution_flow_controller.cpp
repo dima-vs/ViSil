@@ -1,6 +1,6 @@
 #include "execution_flow_controller.h"
 #include "simulation_thread.h"
-#include "status_formatter.h"
+#include "gui/utils/status_formatter.h"
 
 namespace Gui
 {

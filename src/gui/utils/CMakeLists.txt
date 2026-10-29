@@ -10,11 +10,7 @@ set_target_properties(Gui_Utils_Lib PROPERTIES
 )
 
 target_link_libraries(Gui_Utils_Lib
-    PUBLIC
+    PUBLIC Visil_Includes
         Core_Lib
         Qt6::Core
-)
-
-target_include_directories(Gui_Utils_Lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
 )

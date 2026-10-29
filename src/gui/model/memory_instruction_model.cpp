@@ -1,6 +1,6 @@
 #include "memory_instruction_model.h"
-#include "memory_instruction_types.h"
-#include "endian_utils.h"
+#include "gui/common/memory_instruction_types.h"
+#include "core/endian_utils.h"
 
 #include <QString>
 #include <QVariant>

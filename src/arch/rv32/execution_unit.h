@@ -3,8 +3,8 @@
 #include <array>
 #include "register_file.h"
 #include "instruction.h"
-#include "common.h"
-#include "bus_device_interface.h"
+#include "core/common.h"
+#include "core/bus_device_interface.h"
 
 namespace RV32
 {

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "ram.h"
+#include "devices/ram.h"
 
 using namespace Core;
 using namespace Devices;

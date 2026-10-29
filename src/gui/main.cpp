@@ -2,27 +2,27 @@
 #include <QApplication>
 
 // core
-#include "ram.h"
-#include "cpu.h"
-#include "register_file.h"
-#include "simulation_runner.h"
-#include "execution_env_interface.h"
-#include "rv32_disassembler.h"
+#include "devices/ram.h"
+#include "arch/rv32/cpu.h"
+#include "arch/rv32/register_file.h"
+#include "core/simulation_runner.h"
+#include "core/execution_env_interface.h"
+#include "arch/rv32/rv32_disassembler.h"
 
 // models
-#include "app_models.h"
-#include "register_file_model.h"
-#include "memory_instruction_model.h"
-#include "memory_word_model.h"
-#include "memory_block_model.h"
+#include "gui/app_context/app_models.h"
+#include "gui/model/register_file_model.h"
+#include "gui/model/memory_instruction_model.h"
+#include "gui/model/memory_word_model.h"
+#include "gui/model/memory_block_model.h"
 
 // views
-#include "theme_manager.h"
-#include "mainwindow.h"
+#include "gui/view/theme_manager.h"
+#include "gui/view/mainwindow.h"
 
 // controllers
-#include "execution_flow_controller.h"
-#include "file_controller.h"
+#include "gui/controller/execution_flow_controller.h"
+#include "gui/controller/file_controller.h"
 
 class MockEnvironment : public Core::IExecutionEnvironment
 {

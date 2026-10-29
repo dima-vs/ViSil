@@ -10,10 +10,7 @@ set_target_properties(Gui_AppContext_Lib PROPERTIES
 
 target_link_libraries(Gui_AppContext_Lib
     INTERFACE
+        Visil_Includes
         Qt${QT_VERSION_MAJOR}::Core
         Gui_Model_Lib
-)
-
-target_include_directories(Gui_AppContext_Lib INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}
 )

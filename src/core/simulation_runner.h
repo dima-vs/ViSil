@@ -5,7 +5,7 @@
 #include <functional>
 #include <unordered_set>
 #include <mutex>
-#include "cpu_interface.h"
+#include "core/cpu_interface.h"
 #include "execution_env_interface.h"
 
 namespace Core

@@ -2,9 +2,9 @@
 #include <cstdint>
 #include <string_view>
 #include <string>
-#include "cpu_interface.h"
+#include "core/cpu_interface.h"
 #include "register_file.h"
-#include "bus_device_interface.h"
+#include "core/bus_device_interface.h"
 #include "decoder.h"
 #include "execution_unit.h"
 

@@ -6,7 +6,7 @@
 #include <QPointF>
 #include <QString>
 #include <QModelIndex>
-#include "memory_word_types.h"
+#include "gui/common/memory_word_types.h"
 
 namespace Gui
 {

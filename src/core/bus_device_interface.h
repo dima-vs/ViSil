@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "common.h"
+#include "core/common.h"
 #include "endian_utils.h"
 
 namespace Core

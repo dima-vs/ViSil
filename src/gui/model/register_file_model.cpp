@@ -1,5 +1,5 @@
 #include "register_file_model.h"
-#include "common.h"
+#include "core/common.h"
 
 #include <cstdint>
 #include <QString>

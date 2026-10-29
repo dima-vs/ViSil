@@ -6,9 +6,9 @@
 #include <QModelIndex>
 
 #include <cstdint>
-#include "bus_device_interface.h"
-#include "common.h"
-#include "memory_word_types.h"
+#include "core/bus_device_interface.h"
+#include "core/common.h"
+#include "gui/common/memory_word_types.h"
 
 namespace Gui
 {

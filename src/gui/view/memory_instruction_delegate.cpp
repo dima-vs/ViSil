@@ -1,5 +1,5 @@
 #include "memory_instruction_delegate.h"
-#include "memory_instruction_types.h"
+#include "gui/common/memory_instruction_types.h"
 #include "theme_manager.h"
 
 #include <QFontMetrics>

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
-#include "common.h"
+#include "core/common.h"
 
 namespace Core
 {

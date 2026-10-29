@@ -1,6 +1,6 @@
 #pragma once
 
-#include "disassembler_interface.h"
+#include "core/disassembler_interface.h"
 #include "decoder.h"
 
 namespace RV32

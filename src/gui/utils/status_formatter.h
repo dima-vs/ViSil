@@ -2,7 +2,7 @@
 
 #include <QString>
 #include <QPair>
-#include "cpu_interface.h"
+#include "core/cpu_interface.h"
 
 namespace Gui
 {

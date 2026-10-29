@@ -1,7 +1,7 @@
 #include "memory_word_view.h"
 #include "memory_word_delegate.h"
 #include "memory_word_table_header.h"
-#include "memory_word_types.h"
+#include "gui/common/memory_word_types.h"
 
 #include <QHeaderView>
 
