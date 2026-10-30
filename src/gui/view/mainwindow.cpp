@@ -48,8 +48,10 @@ void MainWindow::setupUi()
 
     QTabWidget *memoryTabs = new QTabWidget(vSplitter);
     m_memoryWordView = new MemoryWordView(memoryTabs);
+    m_uartConsoleView = new UartConsoleView(memoryTabs);
 
     memoryTabs->addTab(m_memoryWordView, "Memory Dump");
+    memoryTabs->addTab(m_uartConsoleView, "UART Console");
 
     vSplitter->addWidget(hSplitter);
     vSplitter->addWidget(memoryTabs);
@@ -154,6 +156,16 @@ void MainWindow::showInstructionError(int row, const QString& message)
 void MainWindow::hideInstructionError()
 {
     m_instructionView->hideError();
+}
+
+void MainWindow::uartAppendByte(uint8_t byte)
+{
+    m_uartConsoleView->appendByte(byte);
+}
+
+void MainWindow::clearUartConsole()
+{
+    m_uartConsoleView->clearConsole();
 }
 
 MainWindow::~MainWindow() {}

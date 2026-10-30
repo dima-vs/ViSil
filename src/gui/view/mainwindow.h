@@ -10,6 +10,7 @@
 #include "memory_instruction_view.h"
 #include "memory_word_view.h"
 #include "register_file_view.h"
+#include "gui/view/devices/uart_console_view.h"
 
 namespace Gui
 {
@@ -24,6 +25,7 @@ private:
     MemoryInstructionView *m_instructionView = nullptr;
     RegisterFileView *m_registerView = nullptr;
     MemoryWordView *m_memoryWordView = nullptr;
+    UartConsoleView* m_uartConsoleView = nullptr;
 
     void setupUi();
     void linkSignals();
@@ -44,6 +46,9 @@ public:
 
     void showInstructionError(int row, const QString& message);
     void hideInstructionError();
+public slots:
+    void uartAppendByte(uint8_t byte);
+    void clearUartConsole();
 signals:
     // menu
     void fileSelected(const QString& fileName);
