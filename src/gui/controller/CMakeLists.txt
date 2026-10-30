@@ -1,3 +1,5 @@
+add_subdirectory(devices)
+
 set(Gui_Controller_Sources
     execution_flow_controller.h
     execution_flow_controller.cpp
@@ -21,4 +23,5 @@ target_link_libraries(Gui_Controller_Lib
         Core_Lib
         Devices_Lib
         Gui_Utils_Lib
+        Gui_ControllerDevice_Lib
 )
