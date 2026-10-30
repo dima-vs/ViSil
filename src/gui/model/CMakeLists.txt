@@ -1,3 +1,5 @@
+add_subdirectory(devices)
+
 set(Gui_Model_Sources
     memory_block_model.h
     memory_block_model.cpp
@@ -21,5 +23,6 @@ target_link_libraries(Gui_Model_Lib
    Core_Lib
    Devices_Lib
    Gui_Common_Lib
+   Gui_ModelDevice_Lib
    Qt${QT_VERSION_MAJOR}::Core
 )
