@@ -5,6 +5,7 @@
 #include "devices/ram.h"
 #include "arch/rv32/cpu.h"
 #include "arch/rv32/register_file.h"
+#include "core/system_bus.h"
 #include "core/simulation_runner.h"
 #include "core/execution_env_interface.h"
 #include "arch/rv32/rv32_disassembler.h"
@@ -15,6 +16,7 @@
 #include "gui/model/memory_instruction_model.h"
 #include "gui/model/memory_word_model.h"
 #include "gui/model/memory_block_model.h"
+#include "gui/model/devices/uart_console_model.h"
 
 // views
 #include "gui/view/theme_manager.h"
@@ -23,6 +25,7 @@
 // controllers
 #include "gui/controller/execution_flow_controller.h"
 #include "gui/controller/file_controller.h"
+#include "gui/controller/devices/uart_console_controller.h"
 
 class MockEnvironment : public Core::IExecutionEnvironment
 {
@@ -47,9 +50,15 @@ int main(int argc, char *argv[])
     Gui::ThemeManager::instance().setTheme(Gui::ThemeManager::ThemeType::Dark);
 
     // init backend
+    Core::SystemBus sysBus;
+    Devices::Uart uartDevice(Core::Endianness::Little);
     Devices::Ram ram(1, 64 * 1024, Devices::RamUninitBehavior::ZeroFill, Core::Endianness::Little);
+
+    sysBus.mapDevice(0, &ram);
+    sysBus.mapDevice(0x20000, &uartDevice);
+
     RV32::RegisterFile regFile;
-    RV32::Cpu cpu(regFile, ram);
+    RV32::Cpu cpu(regFile, sysBus);
 
     MockEnvironment mockEnv;
     Core::SimulationRunner simRunner(mockEnv, cpu);
@@ -68,12 +77,14 @@ int main(int argc, char *argv[])
     wordModel.inspectBlock(0x00000000, ram.getSize());
 
     Gui::MemoryBlockModel blockModel(ram);
+    Gui::UartModel uartModel(uartDevice);
 
     Gui::AppModels appModels {
         regModel,
         instrModel,
         wordModel,
-        blockModel
+        blockModel,
+        uartModel
     };
 
     // init views
@@ -90,6 +101,8 @@ int main(int argc, char *argv[])
     execController.changeState(Gui::ExecutionFlowController::State::Unloaded);
     QObject::connect(&fileController, &Gui::FileController::fileLoaded,
         &execController, &Gui::ExecutionFlowController::onFileLoaded);
+
+    Gui::UartConsoleController uartCC(appModels, mainWindow);
 
     mainWindow.show();
 
