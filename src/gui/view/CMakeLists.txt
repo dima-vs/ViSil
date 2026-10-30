@@ -1,3 +1,5 @@
+add_subdirectory(devices)
+
 set(Gui_View_Sources
     mainwindow.h
     mainwindow.cpp
@@ -42,5 +44,6 @@ target_link_libraries(Gui_View_Lib
     PUBLIC Visil_Includes
         Qt${QT_VERSION_MAJOR}::Widgets
         Gui_Common_Lib
+        Gui_ViewDevice_Lib
 )
 
