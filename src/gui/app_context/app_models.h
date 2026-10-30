@@ -4,6 +4,7 @@
 #include "gui/model/memory_instruction_model.h"
 #include "gui/model/memory_word_model.h"
 #include "gui/model/register_file_model.h"
+#include "gui/model/devices/uart_console_model.h"
 
 #include <QAbstractItemModel>
 
@@ -16,6 +17,7 @@ struct AppModels
     MemoryInstructionModel& instructions;
     MemoryWordModel& memoryWords;
     MemoryBlockModel& memoryBlocks;
+    UartModel& uartModel;
 
     void refreshAll() const
     {
