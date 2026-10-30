@@ -238,3 +238,14 @@ QWidget#InlineErrorCard QLabel#ErrorMessageLabel {
     font-size: 12px;
     font-weight: 600;
 }
+
+QWidget#UartConsoleView QPlainTextEdit
+{
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    background-color: #0B0C10;
+    color: #CCCCCC;
+    border: none;
+    padding: 4px;
+    font-weight: 600;
+}
